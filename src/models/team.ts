@@ -1,71 +1,88 @@
+import { utils } from '../scraper';
+
+/**
+ * an instance of a football team for a given season. 
+ */
 class Team {
-    private teamID: number;
+    private url: string;
 
     private name: string;
 
     private city: string;
 
-    private playerIDs: number[];
+    private playerURLs: string[];
 
-    private leagueID: number;
+    private leagueTitle: LeagueTitle;
 
     private season: number;
 
-    constructor(teamID: number, name: string, city: string, playerIDs: number[], leagueID: number, season: number) {
-        this.teamID = teamID;
+    constructor(url: string, name: string, city: string, playerURLs: string[], leagueTitle: LeagueTitle, season: number) {
+        this.url = url;
         this.name = name;
         this.city = city;
-        this.playerIDs = playerIDs;
-        this.leagueID = leagueID;
+        this.playerURLs = playerURLs;
+        this.leagueTitle = leagueTitle;
         this.season = season;
     }
 
-    public getTeamID(): number {
-        return this.teamID;
+    getURL(): string {
+        return this.url;
     }
 
-    public getName(): string {
+    getName(): string {
         return this.name;
     }
 
-    public getCity(): string {
+    getCity(): string {
         return this.city;
     }
 
-    public getPlayerIDs(): number[] {
-        return this.playerIDs;
+    getPlayerURLs(): string[] {
+        return this.playerURLs;
     }
 
-    public getLeagueID(): number {
-        return this.leagueID;
+    getLeagueTitle(): LeagueTitle {
+        return this.leagueTitle;
     }
 
-    public getSeason(): number {
+    getSeason(): number {
         return this.season;
     }
 
-    public setTeamID(teamID: number): void {
-        this.teamID = teamID;
+    setURL(url: string): void {
+        this.url = url;
     }
 
-    public setName(name: string): void {
+    setName(name: string): void {
         this.name = name;
     }
 
-    public setCity(city: string): void {
+    setCity(city: string): void {
         this.city = city;
     }
 
-    public setPlayerIDs(playerIDs: number[]): void {
-        this.playerIDs = playerIDs;
+    setPlayerURLs(playerURLs: string[]): void {
+        this.playerURLs = playerURLs;
     }
 
-    public setLeagueID(leagueID: number): void {
-        this.leagueID = leagueID;
+    setLeagueTitle(leagueTitle: LeagueTitle): void {
+        this.leagueTitle = leagueTitle;
     }
 
-    public setSeason(season: number): void {
+    setSeason(season: number): void {
         this.season = season;
+    }
+
+    addPlayerURL(playerURL: string): void {
+        this.playerURLs.push(playerURL);
+    }
+
+    removePlayerURL(playerURL: string): void {
+        this.playerURLs = this.playerURLs.filter(url => url !== playerURL);
+    }
+
+    getLeagueURL(): string {
+        return utils.leagueURLWithSeason(this.url, this.season);
     }
 }
 

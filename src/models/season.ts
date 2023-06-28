@@ -5,35 +5,35 @@ class Season extends League {
     // year is the year the season started, also it is the seasonID
     private year: number;
 
-    private teamIDs: number[];
+    private teamURLs: string[];
 
-    constructor(year: number, teamIDs: number[], leagueID: number, title: LeagueTitle, seasons?: number[]) {
-        super(leagueID, title, seasons);
+    constructor(year: number, teamURLs: string[], title: LeagueTitle, seasons?: number[]) {
+        super(title, seasons);
         this.year = year;
-        this.teamIDs = teamIDs;
+        this.teamURLs = teamURLs;
     }
 
     /**
      * @returns the year, which is also the seasonID
      */
-    public getYear(): number {
+    getYear(): number {
         return this.year;
     }
 
-    public getTeamIDs(): number[] {
-        return this.teamIDs;
+    getTeamIDs(): string[] {
+        return this.teamURLs;
     }
 
-    public getURL(): string {
+    getURL(): string {
         return utils.leagueURLWithSeason(super.getURL(), this.year);
     }
 
-    public setYear(year: number): void {
+    setYear(year: number): void {
         this.year = year;
     }
 
-    public setTeamIDs(teamIDs: number[]): void {
-        this.teamIDs = teamIDs;
+    setTeamIDs(teamIDs: string[]): void {
+        this.teamURLs = teamIDs;
     }
 }
 

@@ -1,38 +1,46 @@
 class Player {
     private name: string;
 
-    private playerID: number;
+    private url: string;
 
-    private teamID: number;
+    private seasonURLs: string[];
 
-    constructor(name: string, playerID: number, teamID: number) {
+    constructor(name: string, url: string, seasonURLs: string[]) {
         this.name = name;
-        this.playerID = playerID;
-        this.teamID = teamID;
+        this.url = url;
+        this.seasonURLs = seasonURLs;
     }
 
-    public getName(): string {
+    getName(): string {
         return this.name;
     }
 
-    public getPlayerID(): number {
-        return this.playerID;
+    getURL(): string {
+        return this.url;
     }
 
-    public getTeamID(): number {
-        return this.teamID;
+    getSeasonURLs(): string[] {
+        return this.seasonURLs;
     }
 
-    public setName(name: string): void {
+    setName(name: string): void {
         this.name = name;
     }
 
-    public setPlayerID(playerID: number): void {
-        this.playerID = playerID;
+    setURL(url: string): void {
+        this.url = url;
     }
 
-    public setTeamID(teamID: number): void {
-        this.teamID = teamID;
+    setSeasonURLs(seasonURLs: string[]): void {
+        this.seasonURLs = seasonURLs;
+    }
+
+    addSeasonURL(seasonURL: string): void {
+        this.seasonURLs.push(seasonURL);
+    }
+
+    removeSeasonURL(seasonURL: string): void {
+        this.seasonURLs = this.seasonURLs.filter(url => url !== seasonURL);
     }
 }
 
