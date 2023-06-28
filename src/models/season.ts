@@ -1,4 +1,4 @@
-import { utils } from '../scraper';
+import { utils } from '../main';
 import League from './league';
 
 class Season extends League {

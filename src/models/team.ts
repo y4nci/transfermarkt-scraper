@@ -1,4 +1,4 @@
-import { utils } from '../scraper';
+import { utils } from '../main';
 
 /**
  * an instance of a football team for a given season. 
