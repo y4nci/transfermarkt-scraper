@@ -6,6 +6,6 @@ export const teamURLWithSeason = (url: string, season: number) => {
     return `${url}/saison_id/${season}`;
 };
 
-export const pluralise = (word: string, count: number) => {
-    return count === 1 ? word : `${word}s`;
+export const pluralSuffix = (count: number) => {
+    return count > 1 ? 's' : '';
 };
