@@ -7,34 +7,34 @@ class Season extends League {
 
     private teamURLs: string[];
 
-    constructor(year: number, teamURLs: string[], title: LeagueTitle, seasons?: number[]) {
-        super(title, seasons);
+    constructor(url: string, year: number) {
+        const parser = new DOMParser();
+        let seasonDocument: Document;
+
+        utils.fetcher(url).then((data) => {
+            seasonDocument = parser.parseFromString(data, 'text/html');
+        });
+
+        super(url);
+
         this.year = year;
+
+        this.teamURLs = utils
+            .removeHashLinks(utils.removeDuplicates(Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))
+                .map(a => a.getAttribute('href') ?? '')));
+    }
+
+    public getYear = () => this.year;
+
+    public getTeamURLs = () => this.teamURLs;
+
+    public setYear = (year: number) => {
+        this.year = year;
+    };
+
+    public setTeamURLs = (teamURLs: string[]) => {
         this.teamURLs = teamURLs;
-    }
-
-    /**
-     * @returns the year, which is also the seasonID
-     */
-    getYear(): number {
-        return this.year;
-    }
-
-    getTeamIDs(): string[] {
-        return this.teamURLs;
-    }
-
-    getURL(): string {
-        return utils.leagueURLWithSeason(super.getURL(), this.year);
-    }
-
-    setYear(year: number): void {
-        this.year = year;
-    }
-
-    setTeamIDs(teamIDs: string[]): void {
-        this.teamURLs = teamIDs;
-    }
+    };
 }
 
 export default Season;
