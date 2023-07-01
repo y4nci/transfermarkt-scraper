@@ -1,3 +1,5 @@
+import { TRANSFERMARKT_URL } from './constants';
+
 export const leagueURLWithSeason = (url: string, season: number) => {
     return `${url}/plus/?saison_id=${season}`;
 };
@@ -28,3 +30,5 @@ export const removeWhitespaceAtEnds = (str: string) => str.replace(/^\s+|\s+$/g,
 export const removeEmptyStrings = (arr: string[]) => arr.filter(str => str !== '');
 
 export const removeDuplicates = (arr: string[]) => arr.filter((str, index) => arr.indexOf(str) === index);
+
+export const removeHashLinks = (arr: string[]) => arr.filter(str => !str.startsWith('#'));
