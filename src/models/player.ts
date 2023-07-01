@@ -1,4 +1,4 @@
-import { utils } from '../main';
+import { fetcher, removeDuplicates, removeNumbers, removeParantheticals, removeWhitespaceAtEnds } from '../utils';
 
 class Player {
     private url: string;
@@ -15,7 +15,7 @@ class Player {
         const parser = new DOMParser();
         let playerDocument: Document;
 
-        utils.fetcher(url).then((data) => {
+        fetcher(url).then((data) => {
             playerDocument = parser.parseFromString(data, 'text/html');
         });
 
@@ -23,20 +23,20 @@ class Player {
 
         Array.from(playerDocument.querySelectorAll('span.data-header__content'))
             .forEach((span) => {
-                const text = utils.removeWhitespaceAtEnds(span.textContent ?? '');
+                const text = removeWhitespaceAtEnds(span.textContent ?? '');
                 const itemprop = span.getAttribute('itemprop');
 
                 if (itemprop === 'birthDate') {
-                    this.birthDate = new Date(utils.removeParantheticals(text));
+                    this.birthDate = new Date(removeParantheticals(text));
                 } else if (itemprop === 'nationality') {
                     this.nationality = text;
                 }
             });
 
-        this.name = utils.removeNumbers(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent)
+        this.name = removeNumbers(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent)
             ?? '';
 
-        this.teamURLs = utils.removeDuplicates(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
+        this.teamURLs = removeDuplicates(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
             .map(a => a.getAttribute('href') ?? ''));
     }
 

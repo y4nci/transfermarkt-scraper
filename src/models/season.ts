@@ -1,4 +1,4 @@
-import { utils } from '../main';
+import { fetcher, removeDuplicates, removeHashLinks } from '../utils';
 import League from './league';
 
 class Season extends League {
@@ -11,7 +11,7 @@ class Season extends League {
         const parser = new DOMParser();
         let seasonDocument: Document;
 
-        utils.fetcher(url).then((data) => {
+        fetcher(url).then((data) => {
             seasonDocument = parser.parseFromString(data, 'text/html');
         });
 
@@ -19,9 +19,8 @@ class Season extends League {
 
         this.year = year;
 
-        this.teamURLs = utils
-            .removeHashLinks(utils.removeDuplicates(Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))
-                .map(a => a.getAttribute('href') ?? '')));
+        this.teamURLs = removeHashLinks(removeDuplicates(Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))
+            .map(a => a.getAttribute('href') ?? '')));
     }
 
     public getYear = () => this.year;
