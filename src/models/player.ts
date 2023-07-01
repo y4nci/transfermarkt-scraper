@@ -1,47 +1,74 @@
-class Player {
-    private name: string;
+import { utils } from '../main';
 
+class Player {
     private url: string;
 
-    private seasonURLs: string[];
+    private name: string;
 
-    constructor(name: string, url: string, seasonURLs: string[]) {
-        this.name = name;
+    private nationality: string;
+
+    private teamURLs: string[];
+
+    private birthDate: Date;
+
+    constructor(url: string) {
+        const parser = new DOMParser();
+        let playerDocument: Document;
+
+        utils.fetcher(url).then((data) => {
+            playerDocument = parser.parseFromString(data, 'text/html');
+        });
+
         this.url = url;
-        this.seasonURLs = seasonURLs;
+
+        Array.from(playerDocument.querySelectorAll('span.data-header__content'))
+            .forEach((span) => {
+                const text = utils.removeWhitespaceAtEnds(span.textContent ?? '');
+                const itemprop = span.getAttribute('itemprop');
+
+                if (itemprop === 'birthDate') {
+                    this.birthDate = new Date(utils.removeParantheticals(text));
+                } else if (itemprop === 'nationality') {
+                    this.nationality = text;
+                }
+            });
+
+        this.name = utils.removeNumbers(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent)
+            ?? '';
+
+        this.teamURLs = utils.removeDuplicates(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
+            .map(a => a.getAttribute('href') ?? ''));
     }
 
-    getName(): string {
-        return this.name;
-    }
+    public getURL = () => this.url;
 
-    getURL(): string {
-        return this.url;
-    }
+    public getName = () => this.name;
 
-    getSeasonURLs(): string[] {
-        return this.seasonURLs;
-    }
+    public getNationality = () => this.nationality;
 
-    setName(name: string): void {
-        this.name = name;
-    }
+    public getTeamURLs = () => this.teamURLs;
 
-    setURL(url: string): void {
+    public getBirthDate = () => this.birthDate;
+
+    public setURL = (url: string) => {
         this.url = url;
-    }
+    };
 
-    setSeasonURLs(seasonURLs: string[]): void {
-        this.seasonURLs = seasonURLs;
-    }
+    public setName = (name: string) => {
+        this.name = name;
+    };
 
-    addSeasonURL(seasonURL: string): void {
-        this.seasonURLs.push(seasonURL);
-    }
+    public setNationality = (nationality: string) => {
+        this.nationality = nationality;
+    };
 
-    removeSeasonURL(seasonURL: string): void {
-        this.seasonURLs = this.seasonURLs.filter(url => url !== seasonURL);
-    }
+    public setTeamURLs = (teamURLs: string[]) => {
+        this.teamURLs = teamURLs;
+    };
+
+    public setBirthDate = (birthDate: Date) => {
+        this.birthDate = birthDate;
+    };
 }
 
 export default Player;

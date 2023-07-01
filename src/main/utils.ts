@@ -32,3 +32,7 @@ export const removeEmptyStrings = (arr: string[]) => arr.filter(str => str !== '
 export const removeDuplicates = (arr: string[]) => arr.filter((str, index) => arr.indexOf(str) === index);
 
 export const removeHashLinks = (arr: string[]) => arr.filter(str => !str.startsWith('#'));
+
+export const removeNumbers = (str: string) => str.replace(/[#\d]+/g, '');
+
+export const removeParantheticals = (str: string) => str.replace(/\([^)]+\)/g, '');
