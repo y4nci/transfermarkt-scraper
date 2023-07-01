@@ -14,7 +14,7 @@
       ],
       "allowJs": true,
       "checkJs": false,
-      "declaration": false,
+      "declaration": true,
       "declarationMap": false,
       "sourceMap": false,
       "outDir": "./dist",
@@ -31,7 +31,7 @@
       "noPropertyAccessFromIndexSignature": true,            /* Require undeclared properties from index signatures to use element accesses. */
   
       /* Module Resolution Options */
-      "baseUrl": "./",
+      "baseUrl": "./src",
       "noEmit": false,
       "paths": {
         "*": ["./src/types/*.d.ts"],
@@ -50,6 +50,7 @@
   
       /* Advanced Options */
       "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true
+      "forceConsistentCasingInFileNames": true,
     }
-  }
+}
+

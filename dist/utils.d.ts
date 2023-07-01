@@ -1,0 +1,13 @@
+export declare const leagueURLWithSeason: (url: string, season: number) => string;
+export declare const teamURLWithSeason: (url: string, season: number) => string;
+export declare const appendURLToRoot: (url: string) => string;
+export declare const pluralSuffix: (count: number) => "s" | "";
+export declare const responseIsOK: (response: Response) => boolean;
+export declare const fetcher: (url: string) => Promise<string>;
+export declare const removeWhitespaceAtEnds: (str: string) => string;
+export declare const removeEmptyStrings: (arr: string[]) => string[];
+export declare const removeDuplicates: (arr: string[]) => string[];
+export declare const removeHashLinks: (arr: string[]) => string[];
+export declare const removeNumbers: (str: string) => string;
+export declare const removeParantheticals: (str: string) => string;
+export declare const seasonInRange: (season: number) => boolean;

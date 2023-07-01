@@ -1,16 +1,21 @@
 {
-    "name": "typescript-scraper",
+    "name": "@y4nci/typescript-scraper",
     "version": "0.0.0",
     "homepage": "https://github.com/y4nci/typescript-scraper",
-    "private": true,
-    "main": "src/index.ts",
+    "private": false,
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "type": "module",
+    "engines": {
+      "node": ">=16.10.0"
+    },
     "dependencies": {
       "typescript": "^4.7.4"
     },
     "scripts": {
-      "build": "tsc",
+      "build": "yarn clean && tsc",
       "lint": "eslint \"src/**/*.{tsx,ts,js}\" --fix",
-      "clean": "rm -rf node_modules"
+      "clean": "rm -rf dist"
     },
     "eslintConfig": {
       "extends": [

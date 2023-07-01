@@ -36,3 +36,5 @@ export const removeHashLinks = (arr: string[]) => arr.filter(str => !str.startsW
 export const removeNumbers = (str: string) => str.replace(/[#\d]+/g, '');
 
 export const removeParantheticals = (str: string) => str.replace(/\([^)]+\)/g, '');
+
+export const seasonInRange = (season: number) => season >= 1980 && season <= new Date().getFullYear() + 1;

@@ -1,0 +1,12 @@
+export declare const TRANSFERMARKT_URL = "https://transfermarkt.com";
+export declare const PREMIER_LEAGUE_URL = "https://www.transfermarkt.com/premier-league/startseite/wettbewerb/GB1";
+export declare const LA_LIGA_URL = "https://www.transfermarkt.com/laliga/startseite/wettbewerb/ES1";
+export declare const SERIE_A_URL = "https://www.transfermarkt.com/serie-a/startseite/wettbewerb/IT1";
+export declare const BUNDESLIGA_URL = "https://www.transfermarkt.com/bundesliga/startseite/wettbewerb/L1";
+export declare const LIGUE_1_URL = "https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1";
+export declare const SUPER_LIG_URL = "https://www.transfermarkt.com/super-lig/startseite/wettbewerb/TR1";
+export declare const EREDIVISIE_URL = "https://www.transfermarkt.com/eredivisie/startseite/wettbewerb/NL1";
+export declare const PRIMEIRA_LIGA_URL = "https://www.transfermarkt.com/liga-nos/startseite/wettbewerb/PO1";
+export declare const SCOTTISH_PREMIERSHIP_URL = "https://www.transfermarkt.com/scottish-premiership/startseite/wettbewerb/SC1";
+export declare const JUPILER_PRO_LEAGUE_URL = "https://www.transfermarkt.com/jupiler-pro-league/startseite/wettbewerb/BE1";
+export declare const LEAGUE_URLS: Record<LeagueTitle, string>;
