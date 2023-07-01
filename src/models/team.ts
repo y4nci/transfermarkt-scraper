@@ -1,4 +1,5 @@
 import { fetcher, removeDuplicates, removeWhitespaceAtEnds, teamURLWithSeason } from '../utils';
+import Player from './player';
 
 /**
  * an instance of a football team for a given season. 
@@ -21,6 +22,8 @@ class Team {
     private season: number;
 
     private seasonURL: string;
+
+    private players: Player[];
 
     /**
      * parses the given url to extract the team's props and initialize the instance.
@@ -49,6 +52,8 @@ class Team {
         this.season = Number(url.match(/saison_id\/(\d+)/)?.[1]) ?? new Date().getFullYear();
 
         this.seasonURL = teamURLWithSeason(this.leagueURL, this.season);
+
+        this.players = [];
     }
 
     // getters
@@ -65,6 +70,8 @@ class Team {
     public getSeason = () => this.season;
 
     public getSeasonURL = () => this.seasonURL;
+
+    public getPlayers = () => this.players;
 
     // setters
     public setURL = (url: string) => {
@@ -93,6 +100,18 @@ class Team {
 
     public setSeasonURL = (seasonURL: string) => {
         this.seasonURL = seasonURL;
+    };
+
+    /**
+     * fetches players, stores them in the teams prop of the Team instance and returns it.
+     * @returns fetched players
+     */
+    public fetchPlayers = () => {
+        this.playerURLs.forEach((playerURL) => {
+            this.players.push(new Player(playerURL));
+        });
+
+        return this.players;
     };
 }
 

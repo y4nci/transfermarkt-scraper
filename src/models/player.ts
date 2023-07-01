@@ -1,4 +1,5 @@
 import { fetcher, removeDuplicates, removeNumbers, removeParantheticals, removeWhitespaceAtEnds } from '../utils';
+import Team from './team';
 
 class Player {
     private url: string;
@@ -10,6 +11,11 @@ class Player {
     private teamURLs: string[];
 
     private birthDate: Date;
+
+    /**
+     * we only initialise this variable if the user wants it.
+     */
+    private teams: Team[];
 
     constructor(url: string) {
         const parser = new DOMParser();
@@ -38,6 +44,8 @@ class Player {
 
         this.teamURLs = removeDuplicates(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
             .map(a => a.getAttribute('href') ?? ''));
+
+        this.teams = [];
     }
 
     public getURL = () => this.url;
@@ -49,6 +57,8 @@ class Player {
     public getTeamURLs = () => this.teamURLs;
 
     public getBirthDate = () => this.birthDate;
+
+    public getTeams = () => this.teams;
 
     public setURL = (url: string) => {
         this.url = url;
@@ -68,6 +78,18 @@ class Player {
 
     public setBirthDate = (birthDate: Date) => {
         this.birthDate = birthDate;
+    };
+
+    /**
+     * fetches teams, stores them in the teams prop of the Player instance and returns it.
+     * @returns fetched teams
+     */
+    public fetchTeams = () => {
+        this.teamURLs.forEach((teamURL) => {
+            this.teams.push(new Team(teamURL));
+        });
+
+        return this.teams;
     };
 }
 
