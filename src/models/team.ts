@@ -8,82 +8,92 @@ class Team {
 
     private name: string;
 
-    private city: string;
+    private coachName: string;
 
+    /**
+     * we hold the players, and basically everything else, as urls.
+     * because we fetch the data and parse it only when we need it.
+     */
     private playerURLs: string[];
 
-    private leagueTitle: LeagueTitle;
+    private leagueURL: string;
 
     private season: number;
 
-    constructor(url: string, name: string, city: string, playerURLs: string[], leagueTitle: LeagueTitle, season: number) {
+    private seasonURL: string;
+
+    /**
+     * parses the given url to extract the team's props and initialize the instance.
+     * @param url 
+     */
+    constructor(url: string) {
+        const parser = new DOMParser();
+        let teamDocument: Document;
+
+        utils.fetcher(url).then((data) => {
+            teamDocument = parser.parseFromString(data, 'text/html');
+        });
+
         this.url = url;
-        this.name = name;
-        this.city = city;
-        this.playerURLs = playerURLs;
-        this.leagueTitle = leagueTitle;
-        this.season = season;
+
+        this.name = utils.removeWhitespaceAtEnds(teamDocument.querySelector('h1.data-header__headline-wrapper').textContent);
+
+        this.coachName = teamDocument.querySelector('div.container-main')?.getAttribute('href') ?? '';
+
+        // TODO: maybe append these urls to the root url
+        this.playerURLs = utils.removeDuplicates(Array.from(teamDocument.querySelectorAll('td.hauptlink > div > span > a'))
+            .map(a => a.getAttribute('href') ?? ''));
+
+        this.leagueURL = teamDocument.querySelector('span.data-header__club > a')?.getAttribute('href') ?? '';
+
+        this.season = Number(url.match(/saison_id\/(\d+)/)?.[1]) ?? new Date().getFullYear();
+
+        this.seasonURL = utils.teamURLWithSeason(this.leagueURL, this.season);
     }
 
-    getURL(): string {
-        return this.url;
-    }
+    // getters
+    public getURL = () => this.url;
 
-    getName(): string {
-        return this.name;
-    }
+    public getName = () => this.name;
 
-    getCity(): string {
-        return this.city;
-    }
+    public getCoachName = () => this.coachName;
 
-    getPlayerURLs(): string[] {
-        return this.playerURLs;
-    }
+    public getPlayerURLs = () => this.playerURLs;
 
-    getLeagueTitle(): LeagueTitle {
-        return this.leagueTitle;
-    }
+    public getLeagueURL = () => this.leagueURL;
 
-    getSeason(): number {
-        return this.season;
-    }
+    public getSeason = () => this.season;
 
-    setURL(url: string): void {
+    public getSeasonURL = () => this.seasonURL;
+
+    // setters
+    public setURL = (url: string) => {
         this.url = url;
-    }
+    };
 
-    setName(name: string): void {
+    public setName = (name: string) => {
         this.name = name;
-    }
+    };
 
-    setCity(city: string): void {
-        this.city = city;
-    }
+    public setCoachName = (coachName: string) => {
+        this.coachName = coachName;
+    };
 
-    setPlayerURLs(playerURLs: string[]): void {
+    public setPlayerURLs = (playerURLs: string[]) => {
         this.playerURLs = playerURLs;
-    }
+    };
 
-    setLeagueTitle(leagueTitle: LeagueTitle): void {
-        this.leagueTitle = leagueTitle;
-    }
+    public setLeagueURL = (leagueURL: string) => {
+        this.leagueURL = leagueURL;
+    };
 
-    setSeason(season: number): void {
+    public setSeason = (season: number) => {
         this.season = season;
-    }
+    };
 
-    addPlayerURL(playerURL: string): void {
-        this.playerURLs.push(playerURL);
-    }
-
-    removePlayerURL(playerURL: string): void {
-        this.playerURLs = this.playerURLs.filter(url => url !== playerURL);
-    }
-
-    getLeagueURL(): string {
-        return utils.leagueURLWithSeason(this.url, this.season);
-    }
+    public setSeasonURL = (seasonURL: string) => {
+        this.seasonURL = seasonURL;
+    };
 }
 
 export default Team;
