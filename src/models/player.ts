@@ -19,14 +19,16 @@ class Player {
      */
     private teams: Team[];
 
-    constructor(url: string) {
+    constructor() {
+    }
+
+    public async init(url: string) {
         let parser: JSDOM;
         let playerDocument: Document;
 
-        fetcher(url).then((data) => {
-            parser = new JSDOM(data);
-            playerDocument = parser.window.document;
-        });
+        const data = await fetcher(url);
+        parser = new JSDOM(data);
+        playerDocument = parser.window.document;
 
         this.url = url;
 
@@ -49,7 +51,7 @@ class Player {
             .map(a => a.getAttribute('href') ?? ''));
 
         this.teams = [];
-    }
+    };
 
     public getURL = () => this.url;
 
@@ -89,7 +91,9 @@ class Player {
      */
     public fetchTeams = () => {
         this.teamURLs.forEach((teamURL) => {
-            this.teams.push(new Team(teamURL));
+            const team = new Team();
+            team.init(teamURL);
+            this.teams.push(team);
         });
 
         return this.teams;

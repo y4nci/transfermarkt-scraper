@@ -13,22 +13,26 @@ class Season extends League {
     private teams: Team[];
 
     constructor(url: string, year: number) {
-        let parser: JSDOM;
-        let seasonDocument: Document;
-
-        fetcher(url).then((data) => {
-            parser = new JSDOM(data);
-            seasonDocument = parser.window.document;
-        });
-
         super(url);
 
         this.year = year;
+    }
+
+    public async init() {
+        let parser: JSDOM;
+        let seasonDocument: Document;
+
+        const data = await fetcher(this.getURL());
+        
+        parser = new JSDOM(data);
+        seasonDocument = parser.window.document;
 
         this.teamURLs = removeHashLinks(removeDuplicates(Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))
             .map(a => a.getAttribute('href') ?? '')));
 
         this.teams = [];
+
+        return this;
     }
 
     public getYear = () => this.year;
@@ -51,7 +55,9 @@ class Season extends League {
      */
     public fetchTeams = () => {
         this.teamURLs.forEach((teamURL) => {
-            this.teams.push(new Team(teamURL));
+            const team = new Team();
+            team.init(teamURL);
+            this.teams.push(team);
         });
 
         return this.teams;

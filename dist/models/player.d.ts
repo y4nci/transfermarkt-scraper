@@ -9,7 +9,8 @@ declare class Player {
      * we only initialise this variable if the user wants it.
      */
     private teams;
-    constructor(url: string);
+    constructor();
+    init(url: string): Promise<void>;
     getURL: () => string;
     getName: () => string;
     getNationality: () => string;

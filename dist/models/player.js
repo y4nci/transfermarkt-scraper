@@ -7,7 +7,7 @@ const utils_1 = require("../utils");
 const team_1 = __importDefault(require("./team"));
 const jsdom_1 = require("jsdom");
 class Player {
-    constructor(url) {
+    constructor() {
         this.getURL = () => this.url;
         this.getName = () => this.name;
         this.getNationality = () => this.nationality;
@@ -35,16 +35,19 @@ class Player {
          */
         this.fetchTeams = () => {
             this.teamURLs.forEach((teamURL) => {
-                this.teams.push(new team_1.default(teamURL));
+                const team = new team_1.default();
+                team.init(teamURL);
+                this.teams.push(team);
             });
             return this.teams;
         };
+    }
+    async init(url) {
         let parser;
         let playerDocument;
-        (0, utils_1.fetcher)(url).then((data) => {
-            parser = new jsdom_1.JSDOM(data);
-            playerDocument = parser.window.document;
-        });
+        const data = await (0, utils_1.fetcher)(url);
+        parser = new jsdom_1.JSDOM(data);
+        playerDocument = parser.window.document;
         this.url = url;
         Array.from(playerDocument.querySelectorAll('span.data-header__content'))
             .forEach((span) => {
@@ -63,5 +66,6 @@ class Player {
             .map(a => a.getAttribute('href') ?? ''));
         this.teams = [];
     }
+    ;
 }
 exports.default = Player;

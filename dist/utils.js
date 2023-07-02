@@ -22,6 +22,7 @@ const responseIsOK = (response) => response.status === 200;
 exports.responseIsOK = responseIsOK;
 const fetcher = async (url) => fetch(url).then((res) => {
     if ((0, exports.responseIsOK)(res)) {
+        console.log(`DAMMMM`, res.text());
         return res.text();
     }
     throw new Error(`Response status ${res.status} for ${url}`);

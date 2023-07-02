@@ -14,7 +14,7 @@ class Team {
      * parses the given url to extract the team's props and initialize the instance.
      * @param url
      */
-    constructor(url) {
+    constructor() {
         // getters
         this.getURL = () => this.url;
         this.getName = () => this.name;
@@ -52,16 +52,19 @@ class Team {
          */
         this.fetchPlayers = () => {
             this.playerURLs.forEach((playerURL) => {
-                this.players.push(new player_1.default(playerURL));
+                const player = new player_1.default();
+                player.init(playerURL);
+                this.players.push(player);
             });
             return this.players;
         };
+    }
+    async init(url) {
         let parser;
         let teamDocument;
-        (0, utils_1.fetcher)(url).then((data) => {
-            parser = new jsdom_1.JSDOM(data);
-            teamDocument = parser.window.document;
-        });
+        const data = await (0, utils_1.fetcher)(url);
+        parser = new jsdom_1.JSDOM(data);
+        teamDocument = parser.window.document;
         this.url = url;
         this.name = (0, utils_1.removeWhitespaceAtEnds)(teamDocument.querySelector('h1.data-header__headline-wrapper').textContent);
         this.coachName = teamDocument.querySelector('div.container-main')?.getAttribute('href') ?? '';
@@ -73,5 +76,6 @@ class Team {
         this.seasonURL = (0, utils_1.teamURLWithSeason)(this.leagueURL, this.season);
         this.players = [];
     }
+    ;
 }
 exports.default = Team;

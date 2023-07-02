@@ -9,12 +9,6 @@ const team_1 = __importDefault(require("./team"));
 const jsdom_1 = require("jsdom");
 class Season extends league_1.default {
     constructor(url, year) {
-        let parser;
-        let seasonDocument;
-        (0, utils_1.fetcher)(url).then((data) => {
-            parser = new jsdom_1.JSDOM(data);
-            seasonDocument = parser.window.document;
-        });
         super(url);
         this.getYear = () => this.year;
         this.getTeamURLs = () => this.teamURLs;
@@ -31,14 +25,24 @@ class Season extends league_1.default {
          */
         this.fetchTeams = () => {
             this.teamURLs.forEach((teamURL) => {
-                this.teams.push(new team_1.default(teamURL));
+                const team = new team_1.default();
+                team.init(teamURL);
+                this.teams.push(team);
             });
             return this.teams;
         };
         this.year = year;
+    }
+    async init() {
+        let parser;
+        let seasonDocument;
+        const data = await (0, utils_1.fetcher)(this.getURL());
+        parser = new jsdom_1.JSDOM(data);
+        seasonDocument = parser.window.document;
         this.teamURLs = (0, utils_1.removeHashLinks)((0, utils_1.removeDuplicates)(Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))
             .map(a => a.getAttribute('href') ?? '')));
         this.teams = [];
+        return this;
     }
 }
 exports.default = Season;

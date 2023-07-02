@@ -19,7 +19,8 @@ declare class Team {
      * parses the given url to extract the team's props and initialize the instance.
      * @param url
      */
-    constructor(url: string);
+    constructor();
+    init(url: string): Promise<void>;
     getURL: () => string;
     getName: () => string;
     getCoachName: () => string;

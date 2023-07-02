@@ -5,6 +5,7 @@ declare class Season extends League {
     private teamURLs;
     private teams;
     constructor(url: string, year: number);
+    init(): Promise<this>;
     getYear: () => number;
     getTeamURLs: () => string[];
     getTeams: () => Team[];
