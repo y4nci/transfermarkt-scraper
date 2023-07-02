@@ -1,6 +1,14 @@
 import { TRANSFERMARKT_URL } from './constants';
 
-import fetch, { Response } from 'node-fetch';
+import fetch, { Response, RequestInit } from 'node-fetch';
+
+const requestInit: RequestInit = {
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+    },
+    method: 'GET',
+    agent: null,
+};
 
 export const leagueURLWithSeason = (url: string, season: number) => {
     return `${url}/plus/?saison_id=${season}`;
@@ -20,7 +28,7 @@ export const pluralSuffix = (count: number) => {
 
 export const responseIsOK = (response: Response) => response.status === 200;
 
-export const fetcher = async (url: string) => fetch(url).then((res) => {
+export const fetcher = async (url: string) => fetch(url, requestInit).then((res) => {
     if (responseIsOK(res)) {
         return res.text();
     }

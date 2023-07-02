@@ -6,6 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.seasonInRange = exports.removeParantheticals = exports.removeNumbers = exports.removeHashLinks = exports.removeDuplicates = exports.removeEmptyStrings = exports.removeWhitespaceAtEnds = exports.fetcher = exports.responseIsOK = exports.pluralSuffix = exports.appendURLToRoot = exports.teamURLWithSeason = exports.leagueURLWithSeason = void 0;
 const constants_1 = require("./constants");
 const node_fetch_1 = __importDefault(require("node-fetch"));
+const requestInit = {
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+    },
+    method: 'GET',
+    agent: null,
+};
 const leagueURLWithSeason = (url, season) => {
     return `${url}/plus/?saison_id=${season}`;
 };
@@ -24,7 +31,7 @@ const pluralSuffix = (count) => {
 exports.pluralSuffix = pluralSuffix;
 const responseIsOK = (response) => response.status === 200;
 exports.responseIsOK = responseIsOK;
-const fetcher = async (url) => (0, node_fetch_1.default)(url).then((res) => {
+const fetcher = async (url) => (0, node_fetch_1.default)(url, requestInit).then((res) => {
     if ((0, exports.responseIsOK)(res)) {
         return res.text();
     }
