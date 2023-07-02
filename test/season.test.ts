@@ -10,5 +10,11 @@ describe('Season', () => {
     it('should initialize a season', async () => {
         await season.init();
         expect(season.getTeamURLs().length).toBeGreaterThan(0);
+        console.log(season.getTeamURLs());
+    });
+
+    it('should fetch teams', () => {
+        season.fetchTeams();
+        expect(season.getTeams().length).toBeGreaterThan(0);
     });
 });
