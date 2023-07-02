@@ -10,54 +10,23 @@ const jsdom_1 = require("jsdom");
  * an instance of a football team for a given season.
  */
 class Team {
+    url;
+    name;
+    coachName;
+    /**
+     * we hold the players, and basically everything else, as urls.
+     * because we fetch the data and parse it only when we need it.
+     */
+    playerURLs;
+    leagueURL;
+    season;
+    seasonURL;
+    players;
     /**
      * parses the given url to extract the team's props and initialize the instance.
      * @param url
      */
     constructor() {
-        // getters
-        this.getURL = () => this.url;
-        this.getName = () => this.name;
-        this.getCoachName = () => this.coachName;
-        this.getPlayerURLs = () => this.playerURLs;
-        this.getLeagueURL = () => this.leagueURL;
-        this.getSeason = () => this.season;
-        this.getSeasonURL = () => this.seasonURL;
-        this.getPlayers = () => this.players;
-        // setters
-        this.setURL = (url) => {
-            this.url = url;
-        };
-        this.setName = (name) => {
-            this.name = name;
-        };
-        this.setCoachName = (coachName) => {
-            this.coachName = coachName;
-        };
-        this.setPlayerURLs = (playerURLs) => {
-            this.playerURLs = playerURLs;
-        };
-        this.setLeagueURL = (leagueURL) => {
-            this.leagueURL = leagueURL;
-        };
-        this.setSeason = (season) => {
-            this.season = season;
-        };
-        this.setSeasonURL = (seasonURL) => {
-            this.seasonURL = seasonURL;
-        };
-        /**
-         * fetches players, stores them in the teams prop of the Team instance and returns it.
-         * @returns fetched players
-         */
-        this.fetchPlayers = () => {
-            this.playerURLs.forEach((playerURL) => {
-                const player = new player_1.default();
-                player.init(playerURL);
-                this.players.push(player);
-            });
-            return this.players;
-        };
     }
     async init(url) {
         let parser;
@@ -77,5 +46,48 @@ class Team {
         this.players = [];
     }
     ;
+    // getters
+    getURL = () => this.url;
+    getName = () => this.name;
+    getCoachName = () => this.coachName;
+    getPlayerURLs = () => this.playerURLs;
+    getLeagueURL = () => this.leagueURL;
+    getSeason = () => this.season;
+    getSeasonURL = () => this.seasonURL;
+    getPlayers = () => this.players;
+    // setters
+    setURL = (url) => {
+        this.url = url;
+    };
+    setName = (name) => {
+        this.name = name;
+    };
+    setCoachName = (coachName) => {
+        this.coachName = coachName;
+    };
+    setPlayerURLs = (playerURLs) => {
+        this.playerURLs = playerURLs;
+    };
+    setLeagueURL = (leagueURL) => {
+        this.leagueURL = leagueURL;
+    };
+    setSeason = (season) => {
+        this.season = season;
+    };
+    setSeasonURL = (seasonURL) => {
+        this.seasonURL = seasonURL;
+    };
+    /**
+     * fetches players, stores them in the teams prop of the Team instance and returns it.
+     * @returns fetched players
+     */
+    fetchPlayers = () => {
+        this.playerURLs.forEach((playerURL) => {
+            const player = new player_1.default();
+            player.init(playerURL);
+            this.players.push(player);
+        });
+        return this.players;
+    };
 }
 exports.default = Team;

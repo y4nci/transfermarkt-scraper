@@ -8,29 +8,12 @@ const league_1 = __importDefault(require("./league"));
 const team_1 = __importDefault(require("./team"));
 const jsdom_1 = require("jsdom");
 class Season extends league_1.default {
+    // year is the year the season started, also it is the seasonID
+    year;
+    teamURLs;
+    teams;
     constructor(url, year) {
         super(url);
-        this.getYear = () => this.year;
-        this.getTeamURLs = () => this.teamURLs;
-        this.getTeams = () => this.teams;
-        this.setYear = (year) => {
-            this.year = year;
-        };
-        this.setTeamURLs = (teamURLs) => {
-            this.teamURLs = teamURLs;
-        };
-        /**
-         * fetches teams, stores them in the teams prop of the Season instance and returns it.
-         * @returns fetched teams
-         */
-        this.fetchTeams = () => {
-            this.teamURLs.forEach((teamURL) => {
-                const team = new team_1.default();
-                team.init(teamURL);
-                this.teams.push(team);
-            });
-            return this.teams;
-        };
         this.year = year;
     }
     async init() {
@@ -44,5 +27,26 @@ class Season extends league_1.default {
         this.teams = [];
         return this;
     }
+    getYear = () => this.year;
+    getTeamURLs = () => this.teamURLs;
+    getTeams = () => this.teams;
+    setYear = (year) => {
+        this.year = year;
+    };
+    setTeamURLs = (teamURLs) => {
+        this.teamURLs = teamURLs;
+    };
+    /**
+     * fetches teams, stores them in the teams prop of the Season instance and returns it.
+     * @returns fetched teams
+     */
+    fetchTeams = () => {
+        this.teamURLs.forEach((teamURL) => {
+            const team = new team_1.default();
+            team.init(teamURL);
+            this.teams.push(team);
+        });
+        return this.teams;
+    };
 }
 exports.default = Season;

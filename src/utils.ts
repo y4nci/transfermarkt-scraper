@@ -1,5 +1,7 @@
 import { TRANSFERMARKT_URL } from './constants';
 
+import fetch, { Response } from 'node-fetch';
+
 export const leagueURLWithSeason = (url: string, season: number) => {
     return `${url}/plus/?saison_id=${season}`;
 };

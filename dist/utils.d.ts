@@ -1,3 +1,4 @@
+import { Response } from 'node-fetch';
 export declare const leagueURLWithSeason: (url: string, season: number) => string;
 export declare const teamURLWithSeason: (url: string, season: number) => string;
 export declare const appendURLToRoot: (url: string) => string;

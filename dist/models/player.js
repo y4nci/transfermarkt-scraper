@@ -7,40 +7,16 @@ const utils_1 = require("../utils");
 const team_1 = __importDefault(require("./team"));
 const jsdom_1 = require("jsdom");
 class Player {
+    url;
+    name;
+    nationality;
+    teamURLs;
+    birthDate;
+    /**
+     * we only initialise this variable if the user wants it.
+     */
+    teams;
     constructor() {
-        this.getURL = () => this.url;
-        this.getName = () => this.name;
-        this.getNationality = () => this.nationality;
-        this.getTeamURLs = () => this.teamURLs;
-        this.getBirthDate = () => this.birthDate;
-        this.getTeams = () => this.teams;
-        this.setURL = (url) => {
-            this.url = url;
-        };
-        this.setName = (name) => {
-            this.name = name;
-        };
-        this.setNationality = (nationality) => {
-            this.nationality = nationality;
-        };
-        this.setTeamURLs = (teamURLs) => {
-            this.teamURLs = teamURLs;
-        };
-        this.setBirthDate = (birthDate) => {
-            this.birthDate = birthDate;
-        };
-        /**
-         * fetches teams, stores them in the teams prop of the Player instance and returns it.
-         * @returns fetched teams
-         */
-        this.fetchTeams = () => {
-            this.teamURLs.forEach((teamURL) => {
-                const team = new team_1.default();
-                team.init(teamURL);
-                this.teams.push(team);
-            });
-            return this.teams;
-        };
     }
     async init(url) {
         let parser;
@@ -67,5 +43,38 @@ class Player {
         this.teams = [];
     }
     ;
+    getURL = () => this.url;
+    getName = () => this.name;
+    getNationality = () => this.nationality;
+    getTeamURLs = () => this.teamURLs;
+    getBirthDate = () => this.birthDate;
+    getTeams = () => this.teams;
+    setURL = (url) => {
+        this.url = url;
+    };
+    setName = (name) => {
+        this.name = name;
+    };
+    setNationality = (nationality) => {
+        this.nationality = nationality;
+    };
+    setTeamURLs = (teamURLs) => {
+        this.teamURLs = teamURLs;
+    };
+    setBirthDate = (birthDate) => {
+        this.birthDate = birthDate;
+    };
+    /**
+     * fetches teams, stores them in the teams prop of the Player instance and returns it.
+     * @returns fetched teams
+     */
+    fetchTeams = () => {
+        this.teamURLs.forEach((teamURL) => {
+            const team = new team_1.default();
+            team.init(teamURL);
+            this.teams.push(team);
+        });
+        return this.teams;
+    };
 }
 exports.default = Player;
