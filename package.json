@@ -1,48 +1,51 @@
 {
-    "name": "@y4nci/typescript-scraper",
-    "version": "0.0.0",
-    "homepage": "https://github.com/y4nci/typescript-scraper",
-    "private": false,
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "type": "module",
-    "engines": {
-      "node": ">=16.10.0"
-    },
-    "dependencies": {
-      "typescript": "^4.7.4"
-    },
-    "scripts": {
-      "build": "yarn clean && tsc",
-      "lint": "eslint \"src/**/*.{tsx,ts,js}\" --fix",
-      "clean": "rm -rf dist"
-    },
-    "eslintConfig": {
-      "extends": [
-        "react-app",
-        "react-app/jest"
-      ]
-    },
-    "browserslist": {
-      "production": [
-        ">0.2%",
-        "not dead",
-        "not op_mini all"
-      ],
-      "development": [
-        "last 1 chrome version",
-        "last 1 firefox version",
-        "last 1 safari version"
-      ]
-    },
-    "devDependencies": {
-      "@types/node": "^16.11.45",
-      "@typescript-eslint/eslint-plugin": "^5.40.1",
-      "@typescript-eslint/parser": "^5.40.1",
-      "eslint": "^8.32.0",
-      "eslint-plugin-import": "2.27.5",
-      "eslint-config-airbnb-typescript": "^17.0.0",
-      "eslint-import-resolver-typescript": "^3.5.3",
-      "eslint-plugin-simple-import-sort": "^9.0.0"
-    }
+  "name": "@y4nci/typescript-scraper",
+  "version": "0.0.0",
+  "homepage": "https://github.com/y4nci/typescript-scraper",
+  "private": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "engines": {
+    "node": ">=16.10.0"
+  },
+  "dependencies": {
+    "typescript": "^4.7.4"
+  },
+  "scripts": {
+    "build": "yarn clean && tsc",
+    "lint": "eslint \"src/**/*.{tsx,ts,js}\" --fix",
+    "clean": "rm -rf dist"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "29.5.2",
+    "@types/node": "^16.11.45",
+    "@typescript-eslint/eslint-plugin": "^5.40.1",
+    "@typescript-eslint/parser": "^5.40.1",
+    "eslint": "^8.32.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-simple-import-sort": "^9.0.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.1"
   }
+}
