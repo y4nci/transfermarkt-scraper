@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
 const player_1 = __importDefault(require("./player"));
+const jsdom_1 = require("jsdom");
 /**
  * an instance of a football team for a given season.
  */
@@ -55,10 +56,11 @@ class Team {
             });
             return this.players;
         };
-        const parser = new DOMParser();
+        let parser;
         let teamDocument;
         (0, utils_1.fetcher)(url).then((data) => {
-            teamDocument = parser.parseFromString(data, 'text/html');
+            parser = new jsdom_1.JSDOM(data);
+            teamDocument = parser.window.document;
         });
         this.url = url;
         this.name = (0, utils_1.removeWhitespaceAtEnds)(teamDocument.querySelector('h1.data-header__headline-wrapper').textContent);

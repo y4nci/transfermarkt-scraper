@@ -1,6 +1,8 @@
 import { fetcher, removeDuplicates, removeNumbers, removeParantheticals, removeWhitespaceAtEnds } from '../utils';
 import Team from './team';
 
+import { JSDOM } from 'jsdom';
+
 class Player {
     private url: string;
 
@@ -18,11 +20,12 @@ class Player {
     private teams: Team[];
 
     constructor(url: string) {
-        const parser = new DOMParser();
+        let parser: JSDOM;
         let playerDocument: Document;
 
         fetcher(url).then((data) => {
-            playerDocument = parser.parseFromString(data, 'text/html');
+            parser = new JSDOM(data);
+            playerDocument = parser.window.document;
         });
 
         this.url = url;

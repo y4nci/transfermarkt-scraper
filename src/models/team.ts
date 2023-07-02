@@ -1,6 +1,8 @@
 import { fetcher, removeDuplicates, removeWhitespaceAtEnds, teamURLWithSeason } from '../utils';
 import Player from './player';
 
+import { JSDOM } from 'jsdom';
+
 /**
  * an instance of a football team for a given season. 
  */
@@ -30,11 +32,12 @@ class Team {
      * @param url 
      */
     constructor(url: string) {
-        const parser = new DOMParser();
+        let parser: JSDOM;
         let teamDocument: Document;
 
         fetcher(url).then((data) => {
-            teamDocument = parser.parseFromString(data, 'text/html');
+            parser = new JSDOM(data);
+            teamDocument = parser.window.document;
         });
 
         this.url = url;

@@ -6,12 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
 const league_1 = __importDefault(require("./league"));
 const team_1 = __importDefault(require("./team"));
+const jsdom_1 = require("jsdom");
 class Season extends league_1.default {
     constructor(url, year) {
-        const parser = new DOMParser();
+        let parser;
         let seasonDocument;
         (0, utils_1.fetcher)(url).then((data) => {
-            seasonDocument = parser.parseFromString(data, 'text/html');
+            parser = new jsdom_1.JSDOM(data);
+            seasonDocument = parser.window.document;
         });
         super(url);
         this.getYear = () => this.year;

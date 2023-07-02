@@ -2,6 +2,8 @@ import { fetcher, removeDuplicates, removeHashLinks } from '../utils';
 import League from './league';
 import Team from './team';
 
+import { JSDOM } from 'jsdom';
+
 class Season extends League {
     // year is the year the season started, also it is the seasonID
     private year: number;
@@ -11,11 +13,12 @@ class Season extends League {
     private teams: Team[];
 
     constructor(url: string, year: number) {
-        const parser = new DOMParser();
+        let parser: JSDOM;
         let seasonDocument: Document;
 
         fetcher(url).then((data) => {
-            seasonDocument = parser.parseFromString(data, 'text/html');
+            parser = new JSDOM(data);
+            seasonDocument = parser.window.document;
         });
 
         super(url);
