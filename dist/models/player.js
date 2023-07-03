@@ -36,7 +36,7 @@ class Player {
                 this.nationality = text;
             }
         });
-        this.name = (0, utils_1.removeNumbers)(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent)
+        this.name = (0, utils_1.removeWhitespaceAtEnds)((0, utils_1.removeNumbers)(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent))
             ?? '';
         this.teamURLs = (0, utils_1.removeDuplicates)(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
             .map(a => (0, utils_1.appendURLToRoot)(a.getAttribute('href')) ?? ''));

@@ -44,7 +44,7 @@ class Player {
                 }
             });
 
-        this.name = removeNumbers(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent)
+        this.name = removeWhitespaceAtEnds(removeNumbers(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent))
             ?? '';
 
         this.teamURLs = removeDuplicates(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
