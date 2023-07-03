@@ -89,12 +89,12 @@ class Player {
      * fetches teams, stores them in the teams prop of the Player instance and returns it.
      * @returns fetched teams
      */
-    public fetchTeams = () => {
-        this.teamURLs.forEach((teamURL) => {
+    public fetchTeams = async () => {
+        for (const teamURL of this.teamURLs) {
             const team = new Team();
-            team.init(teamURL);
+            await team.init(teamURL);
             this.teams.push(team);
-        });
+        }
 
         return this.teams;
     };

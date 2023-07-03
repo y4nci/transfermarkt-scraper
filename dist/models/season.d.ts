@@ -15,6 +15,6 @@ declare class Season extends League {
      * fetches teams, stores them in the teams prop of the Season instance and returns it.
      * @returns fetched teams
      */
-    fetchTeams: () => Team[];
+    fetchTeams: () => Promise<Team[]>;
 }
 export default Season;

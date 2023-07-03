@@ -13,8 +13,8 @@ describe('Season', () => {
         console.log(season.getTeamURLs());
     });
 
-    it('should fetch teams', () => {
-        season.fetchTeams();
+    it('should fetch teams', async () => {
+        await season.fetchTeams();
         expect(season.getTeams().length).toBeGreaterThan(0);
     });
 });

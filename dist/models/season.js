@@ -40,12 +40,12 @@ class Season extends league_1.default {
      * fetches teams, stores them in the teams prop of the Season instance and returns it.
      * @returns fetched teams
      */
-    fetchTeams = () => {
-        this.teamURLs.forEach((teamURL) => {
+    fetchTeams = async () => {
+        for (const teamURL of this.teamURLs) {
             const team = new team_1.default();
-            team.init(teamURL);
+            await team.init(teamURL);
             this.teams.push(team);
-        });
+        }
         return this.teams;
     };
 }

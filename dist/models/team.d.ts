@@ -40,6 +40,6 @@ declare class Team {
      * fetches players, stores them in the teams prop of the Team instance and returns it.
      * @returns fetched players
      */
-    fetchPlayers: () => Player[];
+    fetchPlayers: () => Promise<Player[]>;
 }
 export default Team;
