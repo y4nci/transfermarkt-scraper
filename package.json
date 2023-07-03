@@ -14,9 +14,10 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "build": "yarn clean && tsc",
+    "build": "tsc",
     "lint": "eslint \"src/**/*.{tsx,ts,js}\" --fix",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test": "yarn build && jest --coverage --detectOpenHandles --forceExit"
   },
   "eslintConfig": {
     "extends": [
