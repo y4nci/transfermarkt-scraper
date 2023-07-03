@@ -44,11 +44,14 @@ const fetchLeagueSeason = async (league, season) => {
 };
 exports.fetchLeagueSeason = fetchLeagueSeason;
 /**
- * fetches all the teams who played in the given league for the last n seasons.
+ * fetches all the teams' urls who played in the given league for the last n seasons.
+ * returns an array of urls corresponding to each team's page for the given season.
+ * for removing the season info and duplicate urls, set removeSeasonInfo to true.
  * @param league
  * @param n
+ * @param removeSeasonInfo removes the season info from the url and removes duplicates if set to true
  */
-const getTeamURLsForLastNSeasons = async (league, n) => {
+const getTeamURLsForLastNSeasons = async (league, n, removeSeasonInfo = false) => {
     const teamURLs = [];
     const currentSeason = new Date().getFullYear();
     const startSeason = currentSeason - n + 1;
@@ -56,7 +59,8 @@ const getTeamURLsForLastNSeasons = async (league, n) => {
         const leagueSeason = await (0, exports.fetchLeagueSeason)(league, season);
         teamURLs.push(...leagueSeason.getTeamURLs());
     }
-    return teamURLs;
+    return removeSeasonInfo
+        ? (0, utils_1.applyFiltersToArray)(teamURLs, (arr) => arr.map(utils_1.removeSeasonInfoFromTeamURL), utils_1.removeDuplicates) : teamURLs;
 };
 exports.getTeamURLsForLastNSeasons = getTeamURLsForLastNSeasons;
 __exportStar(require("./constants"), exports);
