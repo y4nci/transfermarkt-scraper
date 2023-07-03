@@ -49,13 +49,15 @@ export const removeWhitespaceAtEnds = (str: string) => str.replace(/^\s+|\s+$/g,
 
 export const removeEmptyStrings = (arr: string[]) => arr.filter(str => str !== '');
 
-export const removeDuplicates = (arr: string[]) => arr.filter((str, index) => 
-    arr.indexOf(str) === index && arr.indexOf(str.replace('spielplan', 'startseite')) !== index);
+export const removeDuplicates = (arr: string[]) => (arr.map(v => v.replace('spielplan', 'startseite')))
+    .filter((str, index) => arr.indexOf(str) === index);
 
 export const removeHashLinks = (arr: string[]) => arr.filter(str => !str.includes('#'));
 
 export const removeNumbers = (str: string) => str.replace(/[#\d]+/g, '');
 
 export const removeParantheticals = (str: string) => str.replace(/\([^)]+\)/g, '');
+
+export const removeSeasonInfoFromTeamURL = (str: string) => str.indexOf('saison_id') !== -1 ? str.replace(/saison_id\/\d+/, '') : str;
 
 export const seasonInRange = (season: number) => season >= 1980 && season <= new Date().getFullYear() + 1;

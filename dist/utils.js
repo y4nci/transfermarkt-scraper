@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.seasonInRange = exports.removeParantheticals = exports.removeNumbers = exports.removeHashLinks = exports.removeDuplicates = exports.removeEmptyStrings = exports.removeWhitespaceAtEnds = exports.fetcher = exports.responseIsOK = exports.pluralSuffix = exports.convertToTeamURL = exports.appendURLToRoot = exports.teamURLWithSeason = exports.leagueURLWithSeason = void 0;
+exports.seasonInRange = exports.removeSeasonInfoFromTeamURL = exports.removeParantheticals = exports.removeNumbers = exports.removeHashLinks = exports.removeDuplicates = exports.removeEmptyStrings = exports.removeWhitespaceAtEnds = exports.fetcher = exports.responseIsOK = exports.pluralSuffix = exports.convertToTeamURL = exports.appendURLToRoot = exports.teamURLWithSeason = exports.leagueURLWithSeason = void 0;
 const constants_1 = require("./constants");
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const requestInit = {
@@ -52,7 +52,8 @@ const removeWhitespaceAtEnds = (str) => str.replace(/^\s+|\s+$/g, '');
 exports.removeWhitespaceAtEnds = removeWhitespaceAtEnds;
 const removeEmptyStrings = (arr) => arr.filter(str => str !== '');
 exports.removeEmptyStrings = removeEmptyStrings;
-const removeDuplicates = (arr) => arr.filter((str, index) => arr.indexOf(str) === index && arr.indexOf(str.replace('spielplan', 'startseite')) !== index);
+const removeDuplicates = (arr) => (arr.map(v => v.replace('spielplan', 'startseite')))
+    .filter((str, index) => arr.indexOf(str) === index);
 exports.removeDuplicates = removeDuplicates;
 const removeHashLinks = (arr) => arr.filter(str => !str.includes('#'));
 exports.removeHashLinks = removeHashLinks;
@@ -60,5 +61,7 @@ const removeNumbers = (str) => str.replace(/[#\d]+/g, '');
 exports.removeNumbers = removeNumbers;
 const removeParantheticals = (str) => str.replace(/\([^)]+\)/g, '');
 exports.removeParantheticals = removeParantheticals;
+const removeSeasonInfoFromTeamURL = (str) => str.indexOf('saison_id') !== -1 ? str.replace(/saison_id\/\d+/, '') : str;
+exports.removeSeasonInfoFromTeamURL = removeSeasonInfoFromTeamURL;
 const seasonInRange = (season) => season >= 1980 && season <= new Date().getFullYear() + 1;
 exports.seasonInRange = seasonInRange;

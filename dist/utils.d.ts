@@ -18,4 +18,5 @@ export declare const removeDuplicates: (arr: string[]) => string[];
 export declare const removeHashLinks: (arr: string[]) => string[];
 export declare const removeNumbers: (str: string) => string;
 export declare const removeParantheticals: (str: string) => string;
+export declare const removeSeasonInfoFromTeamURL: (str: string) => string;
 export declare const seasonInRange: (season: number) => boolean;

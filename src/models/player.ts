@@ -1,4 +1,4 @@
-import { appendURLToRoot, convertToTeamURL, fetcher, removeDuplicates, removeNumbers, removeParantheticals, removeWhitespaceAtEnds } from '../utils';
+import { appendURLToRoot, convertToTeamURL, fetcher, removeDuplicates, removeNumbers, removeParantheticals, removeSeasonInfoFromTeamURL, removeWhitespaceAtEnds } from '../utils';
 import Team from './team';
 
 import { JSDOM } from 'jsdom';
@@ -48,7 +48,7 @@ class Player {
             ?? '';
 
         this.teamURLs = removeDuplicates(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
-            .map(a => convertToTeamURL(appendURLToRoot(a.getAttribute('href'))) ?? ''));
+        .map(a => removeSeasonInfoFromTeamURL(convertToTeamURL(appendURLToRoot(a.getAttribute('href')))) ?? ''));
 
         this.teams = [];
     };
