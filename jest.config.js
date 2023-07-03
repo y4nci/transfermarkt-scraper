@@ -13,7 +13,7 @@ const commonConfig = {
     ],
     rootDir: path.resolve(__dirname),
     moduleNameMapper: {
-        "^@/(.*)$": "<rootDir>/src/$1"
+        "^@/(.*)$": "<rootDir>/dist/$1"
     },
     testEnvironment: "node",    
     transform: {

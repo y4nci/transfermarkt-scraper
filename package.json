@@ -17,7 +17,7 @@
     "build": "tsc",
     "lint": "eslint \"src/**/*.{tsx,ts,js}\" --fix",
     "clean": "rm -rf dist",
-    "test": "yarn build && jest --coverage --detectOpenHandles --forceExit"
+    "test": "yarn build && jest --detectOpenHandles --forceExit"
   },
   "eslintConfig": {
     "extends": [
