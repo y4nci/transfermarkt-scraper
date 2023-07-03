@@ -65,26 +65,6 @@ class Player {
 
     public getTeams = () => this.teams;
 
-    public setURL = (url: string) => {
-        this.url = url;
-    };
-
-    public setName = (name: string) => {
-        this.name = name;
-    };
-
-    public setNationality = (nationality: string) => {
-        this.nationality = nationality;
-    };
-
-    public setTeamURLs = (teamURLs: string[]) => {
-        this.teamURLs = teamURLs;
-    };
-
-    public setBirthDate = (birthDate: Date) => {
-        this.birthDate = birthDate;
-    };
-
     /**
      * fetches teams, stores them in the teams prop of the Player instance and returns it.
      * @returns fetched teams

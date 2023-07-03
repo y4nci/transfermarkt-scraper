@@ -78,35 +78,6 @@ class Team {
 
     public getPlayers = () => this.players;
 
-    // setters
-    public setURL = (url: string) => {
-        this.url = url;
-    };
-
-    public setName = (name: string) => {
-        this.name = name;
-    };
-
-    public setCoachName = (coachName: string) => {
-        this.coachName = coachName;
-    };
-
-    public setPlayerURLs = (playerURLs: string[]) => {
-        this.playerURLs = playerURLs;
-    };
-
-    public setLeagueURL = (leagueURL: string) => {
-        this.leagueURL = leagueURL;
-    };
-
-    public setSeason = (season: number) => {
-        this.season = season;
-    };
-
-    public setSeasonURL = (seasonURL: string) => {
-        this.seasonURL = seasonURL;
-    };
-
     /**
      * fetches players, stores them in the teams prop of the Team instance and returns it.
      * @returns fetched players

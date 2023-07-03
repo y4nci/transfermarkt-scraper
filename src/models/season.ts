@@ -41,14 +41,6 @@ class Season extends League {
 
     public getTeams = () => this.teams;
 
-    public setYear = (year: number) => {
-        this.year = year;
-    };
-
-    public setTeamURLs = (teamURLs: string[]) => {
-        this.teamURLs = teamURLs;
-    };
-
     /**
      * fetches teams, stores them in the teams prop of the Season instance and returns it.
      * @returns fetched teams
