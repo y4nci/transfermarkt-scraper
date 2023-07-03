@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.seasonInRange = exports.removeParantheticals = exports.removeNumbers = exports.removeHashLinks = exports.removeDuplicates = exports.removeEmptyStrings = exports.removeWhitespaceAtEnds = exports.fetcher = exports.responseIsOK = exports.pluralSuffix = exports.appendURLToRoot = exports.teamURLWithSeason = exports.leagueURLWithSeason = void 0;
+exports.seasonInRange = exports.removeParantheticals = exports.removeNumbers = exports.removeHashLinks = exports.removeDuplicates = exports.removeEmptyStrings = exports.removeWhitespaceAtEnds = exports.fetcher = exports.responseIsOK = exports.pluralSuffix = exports.convertToTeamURL = exports.appendURLToRoot = exports.teamURLWithSeason = exports.leagueURLWithSeason = void 0;
 const constants_1 = require("./constants");
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const requestInit = {
@@ -25,6 +25,16 @@ const appendURLToRoot = (url) => {
     return `${constants_1.TRANSFERMARKT_URL}${url}`;
 };
 exports.appendURLToRoot = appendURLToRoot;
+/**
+ * takes a transfer url and returns the team url.
+ * for example: https://www.transfermarkt.com/fc-barcelona/transfers/verein/131/saison_id/2010 is converted to
+ * https://www.transfermarkt.com/fc-barcelona/startseite/verein/131/saison_id/2010
+ * @param url
+ */
+const convertToTeamURL = (url) => {
+    return url.replace(/transfers/, 'startseite');
+};
+exports.convertToTeamURL = convertToTeamURL;
 const pluralSuffix = (count) => {
     return count > 1 ? 's' : '';
 };

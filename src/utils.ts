@@ -22,6 +22,16 @@ export const appendURLToRoot = (url: string) => {
     return `${TRANSFERMARKT_URL}${url}`;
 };
 
+/**
+ * takes a transfer url and returns the team url.
+ * for example: https://www.transfermarkt.com/fc-barcelona/transfers/verein/131/saison_id/2010 is converted to
+ * https://www.transfermarkt.com/fc-barcelona/startseite/verein/131/saison_id/2010
+ * @param url 
+ */
+export const convertToTeamURL = (url: string) => {
+    return url.replace(/transfers/, 'startseite');
+};
+
 export const pluralSuffix = (count: number) => {
     return count > 1 ? 's' : '';
 };
