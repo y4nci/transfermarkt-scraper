@@ -1,4 +1,4 @@
-import { fetcher, removeDuplicates, removeWhitespaceAtEnds, teamURLWithSeason } from '../utils';
+import { appendURLToRoot, fetcher, removeDuplicates, removeWhitespaceAtEnds, teamURLWithSeason } from '../utils';
 import Player from './player';
 
 import { JSDOM } from 'jsdom';
@@ -50,7 +50,7 @@ class Team {
 
         // TODO: maybe append these urls to the root url
         this.playerURLs = removeDuplicates(Array.from(teamDocument.querySelectorAll('td.hauptlink > div > span > a'))
-            .map(a => a.getAttribute('href') ?? ''));
+            .map(a => appendURLToRoot(a.getAttribute('href')) ?? ''));
 
         this.leagueURL = teamDocument.querySelector('span.data-header__club > a')?.getAttribute('href') ?? '';
 

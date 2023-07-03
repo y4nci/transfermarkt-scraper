@@ -23,7 +23,7 @@ class Season extends league_1.default {
         parser = new jsdom_1.JSDOM(data);
         seasonDocument = parser.window.document;
         this.teamURLs = (0, utils_1.removeHashLinks)((0, utils_1.removeDuplicates)(Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))
-            .map(a => a.getAttribute('href') ?? '')));
+            .map(a => (0, utils_1.appendURLToRoot)(a.getAttribute('href')) ?? '')));
         this.teams = [];
         return this;
     }

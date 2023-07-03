@@ -1,4 +1,4 @@
-import { fetcher, removeDuplicates, removeNumbers, removeParantheticals, removeWhitespaceAtEnds } from '../utils';
+import { appendURLToRoot, fetcher, removeDuplicates, removeNumbers, removeParantheticals, removeWhitespaceAtEnds } from '../utils';
 import Team from './team';
 
 import { JSDOM } from 'jsdom';
@@ -48,7 +48,7 @@ class Player {
             ?? '';
 
         this.teamURLs = removeDuplicates(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
-            .map(a => a.getAttribute('href') ?? ''));
+            .map(a => appendURLToRoot(a.getAttribute('href')) ?? ''));
 
         this.teams = [];
     };

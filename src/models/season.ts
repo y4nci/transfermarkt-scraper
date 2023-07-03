@@ -1,4 +1,4 @@
-import { fetcher, removeDuplicates, removeHashLinks } from '../utils';
+import { appendURLToRoot, fetcher, removeDuplicates, removeHashLinks } from '../utils';
 import League from './league';
 import Team from './team';
 
@@ -28,7 +28,7 @@ class Season extends League {
         seasonDocument = parser.window.document;
 
         this.teamURLs = removeHashLinks(removeDuplicates(Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))
-            .map(a => a.getAttribute('href') ?? '')));
+            .map(a => appendURLToRoot(a.getAttribute('href')) ?? '')));
 
         this.teams = [];
 
