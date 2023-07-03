@@ -13,14 +13,20 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
 var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Team = exports.Season = exports.Player = exports.League = exports.getTeamURLsForLastNSeasons = exports.fetchLeagueSeason = void 0;
 const constants_1 = require("./constants");
-const models_1 = require("./models");
-Object.defineProperty(exports, "League", { enumerable: true, get: function () { return models_1.League; } });
-Object.defineProperty(exports, "Player", { enumerable: true, get: function () { return models_1.Player; } });
-Object.defineProperty(exports, "Season", { enumerable: true, get: function () { return models_1.Season; } });
-Object.defineProperty(exports, "Team", { enumerable: true, get: function () { return models_1.Team; } });
+const league_1 = __importDefault(require("./models/league"));
+exports.League = league_1.default;
+const player_1 = __importDefault(require("./models/player"));
+exports.Player = player_1.default;
+const season_1 = __importDefault(require("./models/season"));
+exports.Season = season_1.default;
+const team_1 = __importDefault(require("./models/team"));
+exports.Team = team_1.default;
 const utils_1 = require("./utils");
 /**
  * fetches a league season from transfermarkt.com and initializes it.
@@ -32,7 +38,7 @@ const fetchLeagueSeason = async (league, season) => {
     if (!(0, utils_1.seasonInRange)(season)) {
         throw new Error(`Season ${season} is not in range`);
     }
-    const leagueSeason = new models_1.Season(constants_1.LEAGUE_URLS[league], season);
+    const leagueSeason = new season_1.default(constants_1.LEAGUE_URLS[league], season);
     await leagueSeason.init();
     return leagueSeason;
 };

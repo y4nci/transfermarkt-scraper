@@ -1,5 +1,8 @@
 import { LeagueName, LEAGUE_URLS } from './constants';
-import { League, Player, Season, Team } from './models';
+import League from './models/league';
+import Player from './models/player';
+import Season from './models/season';
+import Team from './models/team';
 import { seasonInRange } from './utils';
 
 /**
