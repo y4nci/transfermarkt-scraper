@@ -1,4 +1,4 @@
-import * as CONSTANTS from './constants';
+import { LeagueName, LEAGUE_URLS } from './constants';
 import { League, Player, Season, Team } from './models';
 import { seasonInRange } from './utils';
 
@@ -13,7 +13,7 @@ export const fetchLeagueSeason = async (league: LeagueName, season: number) => {
         throw new Error(`Season ${season} is not in range`);
     }
 
-    const leagueSeason = new Season(CONSTANTS.LEAGUE_URLS[league], season);
+    const leagueSeason = new Season(LEAGUE_URLS[league], season);
     await leagueSeason.init();
 
     return leagueSeason;

@@ -1,3 +1,4 @@
+import { LeagueName } from './constants';
 import { League, Player, Season, Team } from './models';
 /**
  * fetches a league season from transfermarkt.com and initializes it.
