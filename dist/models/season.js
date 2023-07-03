@@ -13,7 +13,7 @@ class Season extends league_1.default {
     teamURLs;
     teams;
     constructor(url, year) {
-        super(url);
+        super((0, utils_1.leagueURLWithSeason)(url, year));
         this.year = year;
     }
     async init() {
@@ -30,12 +30,6 @@ class Season extends league_1.default {
     getYear = () => this.year;
     getTeamURLs = () => this.teamURLs;
     getTeams = () => this.teams;
-    setYear = (year) => {
-        this.year = year;
-    };
-    setTeamURLs = (teamURLs) => {
-        this.teamURLs = teamURLs;
-    };
     /**
      * fetches teams, stores them in the teams prop of the Season instance and returns it.
      * @returns fetched teams

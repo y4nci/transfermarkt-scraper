@@ -29,13 +29,6 @@ declare class Team {
     getSeason: () => number;
     getSeasonURL: () => string;
     getPlayers: () => Player[];
-    setURL: (url: string) => void;
-    setName: (name: string) => void;
-    setCoachName: (coachName: string) => void;
-    setPlayerURLs: (playerURLs: string[]) => void;
-    setLeagueURL: (leagueURL: string) => void;
-    setSeason: (season: number) => void;
-    setSeasonURL: (seasonURL: string) => void;
     /**
      * fetches players, stores them in the teams prop of the Team instance and returns it.
      * @returns fetched players

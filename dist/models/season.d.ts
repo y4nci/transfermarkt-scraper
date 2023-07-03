@@ -9,8 +9,6 @@ declare class Season extends League {
     getYear: () => number;
     getTeamURLs: () => string[];
     getTeams: () => Team[];
-    setYear: (year: number) => void;
-    setTeamURLs: (teamURLs: string[]) => void;
     /**
      * fetches teams, stores them in the teams prop of the Season instance and returns it.
      * @returns fetched teams

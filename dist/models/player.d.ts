@@ -17,11 +17,6 @@ declare class Player {
     getTeamURLs: () => string[];
     getBirthDate: () => Date;
     getTeams: () => Team[];
-    setURL: (url: string) => void;
-    setName: (name: string) => void;
-    setNationality: (nationality: string) => void;
-    setTeamURLs: (teamURLs: string[]) => void;
-    setBirthDate: (birthDate: Date) => void;
     /**
      * fetches teams, stores them in the teams prop of the Player instance and returns it.
      * @returns fetched teams

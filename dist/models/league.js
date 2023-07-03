@@ -8,8 +8,5 @@ class League {
     getURL() {
         return this.url;
     }
-    setURL(url) {
-        this.url = url;
-    }
 }
 exports.default = League;

@@ -1,4 +1,4 @@
-import { appendURLToRoot, fetcher, removeDuplicates, removeHashLinks } from '../utils';
+import { appendURLToRoot, fetcher, leagueURLWithSeason, removeDuplicates, removeHashLinks } from '../utils';
 import League from './league';
 import Team from './team';
 
@@ -13,7 +13,7 @@ class Season extends League {
     private teams: Team[];
 
     constructor(url: string, year: number) {
-        super(url);
+        super(leagueURLWithSeason(url, year));
 
         this.year = year;
     }
