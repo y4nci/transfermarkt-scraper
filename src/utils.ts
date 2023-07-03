@@ -39,9 +39,10 @@ export const removeWhitespaceAtEnds = (str: string) => str.replace(/^\s+|\s+$/g,
 
 export const removeEmptyStrings = (arr: string[]) => arr.filter(str => str !== '');
 
-export const removeDuplicates = (arr: string[]) => arr.filter((str, index) => arr.indexOf(str) === index);
+export const removeDuplicates = (arr: string[]) => arr.filter((str, index) => 
+    arr.indexOf(str) === index && arr.indexOf(str.replace('spielplan', 'startseite')) !== index);
 
-export const removeHashLinks = (arr: string[]) => arr.filter(str => !str.startsWith('#'));
+export const removeHashLinks = (arr: string[]) => arr.filter(str => !str.includes('#'));
 
 export const removeNumbers = (str: string) => str.replace(/[#\d]+/g, '');
 
