@@ -34,5 +34,10 @@ export default {
             displayName: 'player',
             testMatch: ['<rootDir>/test/player.test.ts'],
         },
+        {
+            ...commonConfig,
+            displayName: 'team',
+            testMatch: ['<rootDir>/test/team.test.ts'],
+        },
     ],
   }
