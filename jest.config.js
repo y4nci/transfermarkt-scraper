@@ -28,6 +28,11 @@ export default {
             ...commonConfig,
             displayName: 'season',
             testMatch: ['<rootDir>/test/season.test.ts'],
-        }
+        },
+        {
+            ...commonConfig,
+            displayName: 'player',
+            testMatch: ['<rootDir>/test/player.test.ts'],
+        },
     ],
   }
