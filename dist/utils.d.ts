@@ -10,6 +10,8 @@ export declare const appendURLToRoot: (url: string) => string;
  */
 export declare const convertToTeamURL: (url: string) => string;
 export declare const pluralSuffix: (count: number) => "s" | "";
+export declare const teamLinkIsNotValid: (teamLink: string) => boolean;
+export declare const removeInvalidTeamLinks: (teamLinks: string[]) => string[];
 export declare const responseIsOK: (response: Response) => boolean;
 export declare const fetcher: (url: string) => Promise<string>;
 export declare const removeWhitespaceAtEnds: (str: string) => string;
@@ -20,3 +22,8 @@ export declare const removeNumbers: (str: string) => string;
 export declare const removeParantheticals: (str: string) => string;
 export declare const removeSeasonInfoFromTeamURL: (str: string) => string;
 export declare const seasonInRange: (season: number) => boolean;
+type ArrayFilter = (arr: string[]) => string[];
+type StringFilter = (str: string) => string;
+export declare const applyFiltersToArray: (arr: string[], ...filters: ArrayFilter[]) => string[];
+export declare const applyFiltersToString: (str: string, ...filters: StringFilter[]) => string;
+export {};

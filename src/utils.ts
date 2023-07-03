@@ -36,6 +36,10 @@ export const pluralSuffix = (count: number) => {
     return count > 1 ? 's' : '';
 };
 
+export const teamLinkIsNotValid = (teamLink: string) => teamLink === '' || teamLink.includes('relegation');
+
+export const removeInvalidTeamLinks = (teamLinks: string[]) => teamLinks.filter((val) => !teamLinkIsNotValid(val));
+
 export const responseIsOK = (response: Response) => response.status === 200;
 
 export const fetcher = async (url: string) => fetch(url, requestInit).then((res) => {
@@ -61,3 +65,27 @@ export const removeParantheticals = (str: string) => str.replace(/\([^)]+\)/g, '
 export const removeSeasonInfoFromTeamURL = (str: string) => str.indexOf('saison_id') !== -1 ? str.replace(/saison_id\/\d+/, '') : str;
 
 export const seasonInRange = (season: number) => season >= 1980 && season <= new Date().getFullYear() + 1;
+
+type ArrayFilter = (arr: string[]) => string[];
+
+type StringFilter = (str: string) => string;
+
+export const applyFiltersToArray = (arr: string[], ...filters: ArrayFilter[]) => {
+    let result = arr;
+
+    for (const arrFilter of filters) {
+        result = arrFilter(result);
+    }
+
+    return result;
+};
+
+export const applyFiltersToString = (str: string, ...filters: StringFilter[]) => {
+    let result = str;
+
+    for (const strFilter of filters) {
+        result = strFilter(result);
+    }
+
+    return result;
+};
