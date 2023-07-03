@@ -27,19 +27,19 @@ class Player {
         this.url = url;
         Array.from(playerDocument.querySelectorAll('span.data-header__content'))
             .forEach((span) => {
-            const text = (0, utils_1.removeWhitespaceAtEnds)(span.textContent ?? '');
+            const text = (0, utils_1.applyFiltersToString)(span.textContent ?? '', utils_1.removeWhitespaceAtEnds);
             const itemprop = span.getAttribute('itemprop');
             if (itemprop === 'birthDate') {
-                this.birthDate = new Date((0, utils_1.removeParantheticals)(text));
+                this.birthDate = new Date((0, utils_1.applyFiltersToString)(text, utils_1.removeParantheticals));
             }
             else if (itemprop === 'nationality') {
                 this.nationality = text;
             }
         });
-        this.name = (0, utils_1.removeWhitespaceAtEnds)((0, utils_1.removeNumbers)(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent))
+        this.name = (0, utils_1.applyFiltersToString)(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent, utils_1.removeNumbers, utils_1.removeWhitespaceAtEnds)
             ?? '';
-        this.teamURLs = (0, utils_1.removeDuplicates)(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
-            .map(a => (0, utils_1.removeSeasonInfoFromTeamURL)((0, utils_1.convertToTeamURL)((0, utils_1.appendURLToRoot)(a.getAttribute('href')))) ?? ''));
+        this.teamURLs = (0, utils_1.applyFiltersToArray)(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
+            .map(a => (0, utils_1.applyFiltersToString)(a.getAttribute('href'), utils_1.appendURLToRoot, utils_1.convertToTeamURL, utils_1.removeSeasonInfoFromTeamURL) ?? ''), utils_1.removeDuplicates, utils_1.removeInvalidTeamLinks);
         this.teams = [];
     }
     ;

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.seasonInRange = exports.removeSeasonInfoFromTeamURL = exports.removeParantheticals = exports.removeNumbers = exports.removeHashLinks = exports.removeDuplicates = exports.removeEmptyStrings = exports.removeWhitespaceAtEnds = exports.fetcher = exports.responseIsOK = exports.pluralSuffix = exports.convertToTeamURL = exports.appendURLToRoot = exports.teamURLWithSeason = exports.leagueURLWithSeason = void 0;
+exports.applyFiltersToString = exports.applyFiltersToArray = exports.seasonInRange = exports.removeSeasonInfoFromTeamURL = exports.removeParantheticals = exports.removeNumbers = exports.removeHashLinks = exports.removeDuplicates = exports.removeEmptyStrings = exports.removeWhitespaceAtEnds = exports.fetcher = exports.responseIsOK = exports.removeInvalidTeamLinks = exports.teamLinkIsNotValid = exports.pluralSuffix = exports.convertToTeamURL = exports.appendURLToRoot = exports.teamURLWithSeason = exports.leagueURLWithSeason = void 0;
 const constants_1 = require("./constants");
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const requestInit = {
@@ -39,6 +39,10 @@ const pluralSuffix = (count) => {
     return count > 1 ? 's' : '';
 };
 exports.pluralSuffix = pluralSuffix;
+const teamLinkIsNotValid = (teamLink) => teamLink === '' || teamLink.includes('relegation');
+exports.teamLinkIsNotValid = teamLinkIsNotValid;
+const removeInvalidTeamLinks = (teamLinks) => teamLinks.filter((val) => !(0, exports.teamLinkIsNotValid)(val));
+exports.removeInvalidTeamLinks = removeInvalidTeamLinks;
 const responseIsOK = (response) => response.status === 200;
 exports.responseIsOK = responseIsOK;
 const fetcher = async (url) => (0, node_fetch_1.default)(url, requestInit).then((res) => {
@@ -65,3 +69,19 @@ const removeSeasonInfoFromTeamURL = (str) => str.indexOf('saison_id') !== -1 ? s
 exports.removeSeasonInfoFromTeamURL = removeSeasonInfoFromTeamURL;
 const seasonInRange = (season) => season >= 1980 && season <= new Date().getFullYear() + 1;
 exports.seasonInRange = seasonInRange;
+const applyFiltersToArray = (arr, ...filters) => {
+    let result = arr;
+    for (const arrFilter of filters) {
+        result = arrFilter(result);
+    }
+    return result;
+};
+exports.applyFiltersToArray = applyFiltersToArray;
+const applyFiltersToString = (str, ...filters) => {
+    let result = str;
+    for (const strFilter of filters) {
+        result = strFilter(result);
+    }
+    return result;
+};
+exports.applyFiltersToString = applyFiltersToString;

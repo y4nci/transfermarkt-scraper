@@ -22,8 +22,8 @@ class Season extends league_1.default {
         const data = await (0, utils_1.fetcher)(this.getURL());
         parser = new jsdom_1.JSDOM(data);
         seasonDocument = parser.window.document;
-        this.teamURLs = (0, utils_1.removeHashLinks)((0, utils_1.removeDuplicates)(Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))
-            .map(a => (0, utils_1.appendURLToRoot)(a.getAttribute('href')) ?? '')));
+        this.teamURLs = (0, utils_1.applyFiltersToArray)(Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))
+            .map(a => (0, utils_1.applyFiltersToString)(a.getAttribute('href'), utils_1.appendURLToRoot) ?? ''), utils_1.removeDuplicates, utils_1.removeHashLinks, utils_1.removeInvalidTeamLinks);
         this.teams = [];
         return this;
     }

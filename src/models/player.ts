@@ -1,4 +1,4 @@
-import { appendURLToRoot, convertToTeamURL, fetcher, removeDuplicates, removeNumbers, removeParantheticals, removeSeasonInfoFromTeamURL, removeWhitespaceAtEnds } from '../utils';
+import { appendURLToRoot, applyFiltersToArray, applyFiltersToString, convertToTeamURL, fetcher, removeDuplicates, removeInvalidTeamLinks, removeNumbers, removeParantheticals, removeSeasonInfoFromTeamURL, removeWhitespaceAtEnds } from '../utils';
 import Team from './team';
 
 import { JSDOM } from 'jsdom';
@@ -34,21 +34,23 @@ class Player {
 
         Array.from(playerDocument.querySelectorAll('span.data-header__content'))
             .forEach((span) => {
-                const text = removeWhitespaceAtEnds(span.textContent ?? '');
+                const text = applyFiltersToString(span.textContent ?? '', removeWhitespaceAtEnds);
                 const itemprop = span.getAttribute('itemprop');
 
                 if (itemprop === 'birthDate') {
-                    this.birthDate = new Date(removeParantheticals(text));
+                    this.birthDate = new Date(applyFiltersToString(text, removeParantheticals));
                 } else if (itemprop === 'nationality') {
                     this.nationality = text;
                 }
             });
 
-        this.name = removeWhitespaceAtEnds(removeNumbers(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent))
+        this.name = applyFiltersToString(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent,
+            removeNumbers, removeWhitespaceAtEnds)
             ?? '';
 
-        this.teamURLs = removeDuplicates(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
-        .map(a => removeSeasonInfoFromTeamURL(convertToTeamURL(appendURLToRoot(a.getAttribute('href')))) ?? ''));
+        this.teamURLs = applyFiltersToArray(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
+            .map(a => applyFiltersToString(a.getAttribute('href'), appendURLToRoot, convertToTeamURL, removeSeasonInfoFromTeamURL) ?? ''),
+            removeDuplicates, removeInvalidTeamLinks);
 
         this.teams = [];
     };
