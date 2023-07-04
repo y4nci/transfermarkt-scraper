@@ -1,4 +1,4 @@
-import { fetchLeagueSeason, getTeamURLsForLastNSeasons } from '../dist';
+import { LEAGUE_URLS, LeagueName, Team, fetchLeagueSeason, getTeamURLsForLastNSeasons } from '../dist';
 
 describe('main', () => {
     it('should fetch a league season', async () => {
@@ -35,9 +35,26 @@ describe('main', () => {
         expect(equal).toBe(true);
     });
 
-    it('should fetch team URLs for last n seasons', async () => {
-        const teamURLs = await getTeamURLsForLastNSeasons('BUNDESLIGA', 5, true);
-        console.log(teamURLs);
-        expect(teamURLs).toBeDefined();
-    }, 20_000);
+    it('should print the team URLs for last n seasons for all leagues available', async () => {
+        const leagueNames: string[] = Object.keys(LEAGUE_URLS);
+        const teamURLs: { [key: string]: { [key: string]: string } } = {};
+
+        for (const leagueName of leagueNames) {
+            const lastNSeasonTeams = await getTeamURLsForLastNSeasons(leagueName as LeagueName, 1, true);
+            if (!teamURLs[leagueName]) {
+                teamURLs[leagueName] = {};
+            }
+            console.log(leagueName);
+            for (const teamURL of lastNSeasonTeams) {
+                const team = new Team();
+                await team.init(teamURL);
+                
+                teamURLs[leagueName][team.getName()] = (teamURL);
+            }
+
+            console.log(teamURLs[leagueName]);
+        }
+
+        expect(true).toBe(true);
+    }, 8_000_000);
 });
