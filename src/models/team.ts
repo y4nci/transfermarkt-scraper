@@ -54,7 +54,7 @@ class Team {
 
         this.leagueURL = teamDocument.querySelector('span.data-header__club > a')?.getAttribute('href') ?? '';
 
-        this.season = Number(url.match(/saison_id\/(\d+)/)?.[1]) ?? new Date().getFullYear();
+        this.season = Number(url.match(/saison_id\/(\d+)/)?.[1] ?? new Date().getFullYear());
 
         this.seasonURL = teamURLWithSeason(this.leagueURL, this.season);
 

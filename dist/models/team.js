@@ -40,7 +40,7 @@ class Team {
         this.playerURLs = (0, utils_1.applyFiltersToArray)(Array.from(teamDocument.querySelectorAll('td.hauptlink > div > span > a'))
             .map(a => (0, utils_1.applyFiltersToString)(a.getAttribute('href'), utils_1.appendURLToRoot) ?? ''), utils_1.removeDuplicates);
         this.leagueURL = teamDocument.querySelector('span.data-header__club > a')?.getAttribute('href') ?? '';
-        this.season = Number(url.match(/saison_id\/(\d+)/)?.[1]) ?? new Date().getFullYear();
+        this.season = Number(url.match(/saison_id\/(\d+)/)?.[1] ?? new Date().getFullYear());
         this.seasonURL = (0, utils_1.teamURLWithSeason)(this.leagueURL, this.season);
         this.players = [];
     }

@@ -454,6 +454,11 @@ export declare const EFBET_LIGA_URLS: {
     'Beroe Stara Zagora': string;
     'Pirin Blagoevgrad': string;
 };
+/**
+ * Object containing all the urls for the teams in the different leagues.
+ * If you want to fetch information for a specific season, you should add the season to the url via
+ * transfermarkt_scraper_utils.teamURLWithSeason(teamUrl, season) function.
+ */
 export declare const TEAM_URLS: {
     PREMIER_LEAGUE: {
         'Manchester City': string;
@@ -846,5 +851,41 @@ export declare const TEAM_URLS: {
         Krumovgrad: string;
         'Beroe Stara Zagora': string;
         'Pirin Blagoevgrad': string;
+    };
+    SCOTTISH_PREMIERSHIP: {
+        'Celtic FC': string;
+        'Rangers FC': string;
+        'Heart of Midlothian FC': string;
+        'Aberdeen FC': string;
+        'Hibernian FC': string;
+        'Livingston FC': string;
+        'Ross County FC': string;
+        'St. Mirren FC': string;
+        'Motherwell FC': string;
+        'St. Johnstone FC': string;
+        'Kilmarnock FC': string;
+        'Dundee FC': string;
+    };
+    SUPER_LIG: {
+        Fenerbahce: string;
+        Galatasaray: string;
+        Trabzonspor: string;
+        'Besiktas JK': string;
+        'Basaksehir FK': string;
+        Alanyaspor: string;
+        'Adana Demirspor': string;
+        Antalyaspor: string;
+        Konyaspor: string;
+        'MKE Ankarag\u00FCc\u00FC': string;
+        Hatayspor: string;
+        'Gaziantep FK': string;
+        'Fatih Karag\u00FCmr\u00FCk': string;
+        Kayserispor: string;
+        Samsunspor: string;
+        Sivasspor: string;
+        Kasimpasa: string;
+        'Caykur Rizespor': string;
+        Istanbulspor: string;
+        Pendikspor: string;
     };
 };

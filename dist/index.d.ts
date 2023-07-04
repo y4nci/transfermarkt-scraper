@@ -21,3 +21,4 @@ export declare const fetchLeagueSeason: (league: LeagueName, season: number) => 
 export declare const getTeamURLsForLastNSeasons: (league: LeagueName, n: number, removeSeasonInfo?: boolean) => Promise<string[]>;
 export { League, Player, Season, Team, };
 export * from './constants';
+export * as transfermarkt_scraper_utils from './utils';

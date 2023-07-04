@@ -52,3 +52,5 @@ export {
 };
 
 export * from './constants';
+
+export * as transfermarkt_scraper_utils from './utils';

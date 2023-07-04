@@ -481,6 +481,11 @@ export const EFBET_LIGA_URLS = {
     'Pirin Blagoevgrad': 'https://transfermarkt.com/ofk-pirin-blagoevgrad/startseite/verein/521/'
 };
 
+/**
+ * Object containing all the urls for the teams in the different leagues.
+ * If you want to fetch information for a specific season, you should add the season to the url via
+ * transfermarkt_scraper_utils.teamURLWithSeason(teamUrl, season) function.
+ */
 export const TEAM_URLS = {
     PREMIER_LEAGUE: PREMIER_LEAGUE_URLS,
     LA_LIGA: LA_LIGA_URLS,
@@ -503,5 +508,7 @@ export const TEAM_URLS = {
     ALLSVENSKAN: ALLSVENSKAN_URLS,
     LIGAT_HAAL: LIGAT_HAAL_URLS,
     NEMZETI_BAJNOKSAG: NEMZETI_BAJNOKSAG_URLS,
-    EFBET_LIGA: EFBET_LIGA_URLS
+    EFBET_LIGA: EFBET_LIGA_URLS,
+    SCOTTISH_PREMIERSHIP: SCOTTISH_PREMIERSHIP_URLS,
+    SUPER_LIG: SUPER_LIG_URLS,
 };
