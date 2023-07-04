@@ -13,7 +13,7 @@ const commonConfig = {
     ],
     rootDir: path.resolve(__dirname),
     moduleNameMapper: {
-        "^@/(.*)$": "<rootDir>/dist/$1"
+        "^@/(.*)$": "<rootDir>/src/$1"
     },
     testEnvironment: "node",    
     transform: {
@@ -24,6 +24,11 @@ const commonConfig = {
 export default {
     displayName: '@y4nci/transfermarkt-scraper',
     projects: [
+        {
+            ...commonConfig,
+            displayName: 'main',
+            testMatch: ['<rootDir>/test/main.test.ts'],
+        },
         {
             ...commonConfig,
             displayName: 'season',

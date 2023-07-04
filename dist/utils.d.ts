@@ -9,7 +9,7 @@ export declare const appendURLToRoot: (url: string) => string;
  * @param url
  */
 export declare const convertToTeamURL: (url: string) => string;
-export declare const pluralSuffix: (count: number) => "s" | "";
+export declare const pluralSuffix: (count: number) => "" | "s";
 export declare const teamLinkIsNotValid: (teamLink: string) => boolean;
 export declare const removeInvalidTeamLinks: (teamLinks: string[]) => string[];
 export declare const responseIsOK: (response: Response) => boolean;
