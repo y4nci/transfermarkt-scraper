@@ -32,7 +32,7 @@ export type LeagueName = keyof typeof LEAGUE_URLS;
 export const PREMIER_LEAGUE_URLS = {
     'Manchester City': 'https://transfermarkt.com/manchester-city/startseite/verein/281/',
     'Arsenal FC': 'https://transfermarkt.com/fc-arsenal/startseite/verein/11/',
-    'Chelsea FC': 'https://transfermarkt.com/fc-chelsea/startseite/verein/631/',
+    'Chelsea FC': 'https://transfermarkt.com/chelsea-fc/startseite/verein/631/',
     'Liverpool FC': 'https://transfermarkt.com/fc-liverpool/startseite/verein/31/',
     'Manchester United': 'https://transfermarkt.com/manchester-united/startseite/verein/985/',
     'Tottenham Hotspur': 'https://transfermarkt.com/tottenham-hotspur/startseite/verein/148/',

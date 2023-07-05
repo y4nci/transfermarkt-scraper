@@ -14,15 +14,15 @@ const requestInit = {
     agent: null,
 };
 const leagueURLWithSeason = (url, season) => {
-    return `${url}/plus/?saison_id=${season}`;
+    return `${url}${url.endsWith('/') ? '' : '/'}plus/?saison_id=${season}`;
 };
 exports.leagueURLWithSeason = leagueURLWithSeason;
 const teamURLWithSeason = (url, season) => {
-    return `${url}/saison_id/${season}`;
+    return `${url}${url.endsWith('/') ? '' : '/'}/saison_id/${season}`;
 };
 exports.teamURLWithSeason = teamURLWithSeason;
 const appendURLToRoot = (url) => {
-    return `${constants_1.TRANSFERMARKT_URL}${url}`;
+    return `${constants_1.TRANSFERMARKT_URL}${url.startsWith('/') ? '' : '/'}${url}`;
 };
 exports.appendURLToRoot = appendURLToRoot;
 /**
