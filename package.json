@@ -1,10 +1,10 @@
 {
-  "name": "@y4nci/typescript-scraper",
-  "version": "0.0.0",
-  "homepage": "https://github.com/y4nci/typescript-scraper",
+  "name": "@y4nci/transfermarkt-scraper",
+  "version": "0.0.1",
+  "homepage": "https://github.com/y4nci/transfermarkt-scraper",
   "private": false,
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
   "engines": {
     "node": ">=16.10.0"
@@ -25,18 +25,6 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
     ]
   },
   "devDependencies": {
