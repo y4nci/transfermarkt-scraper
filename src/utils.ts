@@ -85,6 +85,13 @@ export const fetchPlayer = async (playerId: number) => {
     return data;
 };
 
+export const fetchLeagueSeason = async (leagueId: string, season: number) => {
+    const leagueSeasonURL = getLeagueSeasonURLfromID(leagueId, season);
+    const data = await fetcher(leagueSeasonURL);
+
+    return data;
+};
+
 export const getIDfromURL = (url: string) => {
     const splitted = removeSeasonInfoFromTeamURL(url).split('/');
     return splitted.pop() || splitted.pop();

@@ -1,7 +1,8 @@
 import { JSDOM } from 'jsdom';
 
 import {
-    appendURLToRoot, applyFiltersToArray, applyFiltersToElement, fetcher, getIDsFromURLs, getLeagueSeasonURLfromID, getTeamURLfromID,
+    appendURLToRoot, applyFiltersToArray, applyFiltersToElement, fetchLeagueSeason, getIDsFromURLs, getLeagueSeasonURLfromID,
+    getTeamURLfromID,
     removeDuplicates,
     removeHashLinks, removeInvalidTeamLinks,
 } from '../utils';
@@ -26,7 +27,7 @@ class Season extends League {
         let parser: JSDOM;
         let seasonDocument: Document;
 
-        const data = await fetcher(this.getID());
+        const data = await fetchLeagueSeason(this.getID(), this.year);
 
         parser = new JSDOM(data);
         seasonDocument = parser.window.document;

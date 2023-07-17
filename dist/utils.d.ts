@@ -19,6 +19,7 @@ export declare const responseIsOK: (response: Response) => boolean;
 export declare const fetcher: (url: string) => Promise<string>;
 export declare const fetchTeam: (teamId: number) => Promise<string>;
 export declare const fetchPlayer: (playerId: number) => Promise<string>;
+export declare const fetchLeagueSeason: (leagueId: string, season: number) => Promise<string>;
 export declare const getIDfromURL: (url: string) => string;
 export declare const getIDsFromURLs: (urls: string[]) => string[];
 export declare const removeWhitespaceAtEnds: (str: string) => string;

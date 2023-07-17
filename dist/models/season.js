@@ -19,7 +19,7 @@ class Season extends league_1.default {
     async init() {
         let parser;
         let seasonDocument;
-        const data = await (0, utils_1.fetcher)(this.getID());
+        const data = await (0, utils_1.fetchLeagueSeason)(this.getID(), this.year);
         parser = new jsdom_1.JSDOM(data);
         seasonDocument = parser.window.document;
         this.teamIDs = (0, utils_1.applyFiltersToArray)(Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))

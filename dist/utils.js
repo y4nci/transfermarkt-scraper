@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.applyFiltersToElement = exports.applyFiltersToArray = exports.seasonInRange = exports.removeSeasonInfoFromTeamURL = exports.removeParantheticals = exports.removeNumbers = exports.removeHashLinks = exports.removeDuplicates = exports.removeEmptyStrings = exports.removeWhitespaceAtEnds = exports.getIDsFromURLs = exports.getIDfromURL = exports.fetchPlayer = exports.fetchTeam = exports.fetcher = exports.responseIsOK = exports.getLeagueSeasonURLfromID = exports.getPlayerURLfromID = exports.getTeamURLfromID = exports.removeInvalidTeamLinks = exports.teamLinkIsNotValid = exports.pluralSuffix = exports.convertToTeamURL = exports.appendURLToRoot = exports.teamURLWithSeason = exports.leagueURLWithSeason = void 0;
+exports.applyFiltersToElement = exports.applyFiltersToArray = exports.seasonInRange = exports.removeSeasonInfoFromTeamURL = exports.removeParantheticals = exports.removeNumbers = exports.removeHashLinks = exports.removeDuplicates = exports.removeEmptyStrings = exports.removeWhitespaceAtEnds = exports.getIDsFromURLs = exports.getIDfromURL = exports.fetchLeagueSeason = exports.fetchPlayer = exports.fetchTeam = exports.fetcher = exports.responseIsOK = exports.getLeagueSeasonURLfromID = exports.getPlayerURLfromID = exports.getTeamURLfromID = exports.removeInvalidTeamLinks = exports.teamLinkIsNotValid = exports.pluralSuffix = exports.convertToTeamURL = exports.appendURLToRoot = exports.teamURLWithSeason = exports.leagueURLWithSeason = void 0;
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const constants_1 = require("./constants");
 const requestInit = {
@@ -83,6 +83,12 @@ const fetchPlayer = async (playerId) => {
     return data;
 };
 exports.fetchPlayer = fetchPlayer;
+const fetchLeagueSeason = async (leagueId, season) => {
+    const leagueSeasonURL = (0, exports.getLeagueSeasonURLfromID)(leagueId, season);
+    const data = await (0, exports.fetcher)(leagueSeasonURL);
+    return data;
+};
+exports.fetchLeagueSeason = fetchLeagueSeason;
 const getIDfromURL = (url) => {
     const splitted = (0, exports.removeSeasonInfoFromTeamURL)(url).split('/');
     return splitted.pop() || splitted.pop();
