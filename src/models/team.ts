@@ -40,7 +40,7 @@ class Team {
         let parser: JSDOM;
         let teamDocument: Document;
 
-        const data = await fetchTeam(this.id);
+        const data = await fetchTeam(this.id, this.season);
         parser = new JSDOM(data);
         teamDocument = parser.window.document;
 

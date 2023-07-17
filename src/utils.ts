@@ -71,8 +71,8 @@ export const fetcher = async (url: string) => fetch(url, requestInit).then((res)
     throw new Error(`Response status ${res.status} for ${url}`);
 });
 
-export const fetchTeam = async (teamId: number) => {
-    const teamURL = `${TRANSFERMARKT_URL}/team/startseite/verein/${teamId}`;
+export const fetchTeam = async (teamId: number, season?: number) => {
+    const teamURL = getTeamURLfromID(teamId, season);
     const data = await fetcher(teamURL);
 
     return data;
@@ -88,6 +88,8 @@ export const fetchPlayer = async (playerId: number) => {
 export const fetchLeagueSeason = async (leagueId: string, season: number) => {
     const leagueSeasonURL = getLeagueSeasonURLfromID(leagueId, season);
     const data = await fetcher(leagueSeasonURL);
+
+    console.log(leagueSeasonURL);
 
     return data;
 };

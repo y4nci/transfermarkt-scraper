@@ -28,7 +28,7 @@ class Team {
     async init() {
         let parser;
         let teamDocument;
-        const data = await (0, utils_1.fetchTeam)(this.id);
+        const data = await (0, utils_1.fetchTeam)(this.id, this.season);
         parser = new jsdom_1.JSDOM(data);
         teamDocument = parser.window.document;
         this.name = (0, utils_1.applyFiltersToElement)(teamDocument.querySelector('h1.data-header__headline-wrapper')?.textContent, utils_1.removeWhitespaceAtEnds);
