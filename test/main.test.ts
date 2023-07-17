@@ -1,4 +1,24 @@
-import { TEAM_IDS, Team, fetchLeagueSeason } from '../dist';
+import { PREMIER_LEAGUE_IDS, TEAM_IDS, Team, fetchLeagueSeason } from '../dist';
+
+const findPlayerWhoPlayedForBothTeams = async (team1ID: number, team2ID: number, since?: number) => {
+    const players: string[] = [];
+
+    for (let season = since ?? 2007; season <= new Date().getFullYear(); season++) {
+        const firstTeam = new Team(team1ID, season);
+        await firstTeam.init();
+
+        const firstPlayers = await firstTeam.fetchPlayers();
+
+        for (const player of firstPlayers) {
+            if (player.getTeamIDs()
+                .includes(team2ID) && players.indexOf(player.getName()) === -1) {
+                players.push(player.getName());
+            }
+        }
+    }
+
+    console.log(players);
+};
 
 describe('main', () => {
     it('should fetch a league season', async () => {
@@ -38,7 +58,7 @@ describe('main', () => {
     }, 10_000);
 
     it('should fetch a team based on id', async () => {
-        const team = new Team(TEAM_IDS.SUPER_LIG['MKE Ankaragücü'], 2004);
+        const team = new Team(TEAM_IDS['MKE Ankaragücü'], 2004);
         await team.init();
         expect(team.getName()).toBe('MKE Ankaragücü');
         expect(team.getSeason()).toBe(2004);
@@ -48,7 +68,7 @@ describe('main', () => {
         const players: string[] = [];
 
         for (let season = 2007; season <= new Date().getFullYear(); season++) {
-            const realMadridTeam = new Team(TEAM_IDS.LA_LIGA['Real Madrid'], season);
+            const realMadridTeam = new Team(TEAM_IDS['Real Madrid'], season);
             await realMadridTeam.init();
 
             expect(realMadridTeam.getSeason()).toBe(season);
@@ -59,7 +79,7 @@ describe('main', () => {
 
             for (const player of rmPlayers) {
                 if (player.getTeamIDs()
-                    .includes(TEAM_IDS.PREMIER_LEAGUE['Chelsea FC']) && players.indexOf(player.getName()) === -1) {
+                    .includes(TEAM_IDS['Chelsea FC']) && players.indexOf(player.getName()) === -1) {
                     players.push(player.getName());
                 }
             }
