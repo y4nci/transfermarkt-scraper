@@ -1,10 +1,16 @@
+import { LEAGUE_IDS } from '../dist';
 import Season from '../dist/models/season';
 
 describe('Season', () => {
-    const season = new Season('https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1', 2016);
+    const season = new Season(LEAGUE_IDS.LIGUE_1, 2016);
 
     it('should create a season', () => {
         expect(season.getYear()).toBe(2016);
+    });
+
+    it('should generate the season url correctly', () => {
+        console.log(season.getURL());
+        expect(season.getURL()).toBe('https://transfermarkt.com/league/startseite/wettbewerb/FR1/plus/?saison_id=2016');
     });
 
     it('should initialize a season', async () => {
@@ -33,8 +39,8 @@ describe('Season', () => {
         let equal = true;
         await season.init();
 
-        season.getTeamIDs().forEach((teamURL) => {
-            if (expected.indexOf(teamURL) === -1) {
+        season.getTeamIDs().forEach((teamId) => {
+            if (expected.indexOf(teamId) === -1) {
                 equal = false;
             }
         });
@@ -57,6 +63,8 @@ describe('Season', () => {
         ];
         let equal = true;
         await season.fetchTeams();
+
+        console.log(season.getTeams().map((team) => team.getName()));
 
         season.getTeams().forEach((team) => {
             if (expected.indexOf(team.getName()) === -1) {
