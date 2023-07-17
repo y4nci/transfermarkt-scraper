@@ -89,8 +89,6 @@ export const fetchLeagueSeason = async (leagueId: string, season: number) => {
     const leagueSeasonURL = getLeagueSeasonURLfromID(leagueId, season);
     const data = await fetcher(leagueSeasonURL);
 
-    console.log(leagueSeasonURL);
-
     return data;
 };
 
