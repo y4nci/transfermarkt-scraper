@@ -86,7 +86,6 @@ exports.fetchPlayer = fetchPlayer;
 const fetchLeagueSeason = async (leagueId, season) => {
     const leagueSeasonURL = (0, exports.getLeagueSeasonURLfromID)(leagueId, season);
     const data = await (0, exports.fetcher)(leagueSeasonURL);
-    console.log(leagueSeasonURL);
     return data;
 };
 exports.fetchLeagueSeason = fetchLeagueSeason;
