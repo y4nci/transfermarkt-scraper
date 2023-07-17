@@ -29,7 +29,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.transfermarkt_scraper_utils = exports.Team = exports.Season = exports.Player = exports.League = exports.getTeamURLsForLastNSeasons = exports.fetchLeagueSeason = void 0;
+exports.transfermarkt_scraper_utils = exports.Team = exports.Season = exports.Player = exports.League = exports.getTeamIDsForLastNSeasons = exports.fetchLeagueSeason = void 0;
 const constants_1 = require("./constants");
 const league_1 = __importDefault(require("./models/league"));
 exports.League = league_1.default;
@@ -50,30 +50,27 @@ const fetchLeagueSeason = async (league, season) => {
     if (!(0, utils_1.seasonInRange)(season)) {
         throw new Error(`Season ${season} is not in range`);
     }
-    const leagueSeason = new season_1.default(constants_1.LEAGUE_URLS[league], season);
+    const leagueSeason = new season_1.default(constants_1.LEAGUE_IDS[league], season);
     await leagueSeason.init();
     return leagueSeason;
 };
 exports.fetchLeagueSeason = fetchLeagueSeason;
 /**
- * fetches all the teams' urls who played in the given league for the last n seasons.
+ * fetches all the teams' ids who played in the given league for the last n seasons.
  * returns an array of urls corresponding to each team's page for the given season.
- * for removing the season info and duplicate urls, set removeSeasonInfo to true.
  * @param league
  * @param n
- * @param removeSeasonInfo removes the season info from the url and removes duplicates if set to true
  */
-const getTeamURLsForLastNSeasons = async (league, n, removeSeasonInfo = false) => {
-    const teamURLs = [];
+const getTeamIDsForLastNSeasons = async (league, n) => {
+    const teamIDs = [];
     const currentSeason = new Date().getFullYear();
     const startSeason = currentSeason - n + 1;
     for (let season = startSeason; season <= currentSeason; season++) {
         const leagueSeason = await (0, exports.fetchLeagueSeason)(league, season);
-        teamURLs.push(...leagueSeason.getTeamURLs());
+        teamIDs.push(...leagueSeason.getTeamIDs());
     }
-    return removeSeasonInfo
-        ? (0, utils_1.applyFiltersToArray)(teamURLs, (arr) => arr.map(utils_1.removeSeasonInfoFromTeamURL), utils_1.removeDuplicates) : teamURLs;
+    return teamIDs;
 };
-exports.getTeamURLsForLastNSeasons = getTeamURLsForLastNSeasons;
+exports.getTeamIDsForLastNSeasons = getTeamIDsForLastNSeasons;
 __exportStar(require("./constants"), exports);
 exports.transfermarkt_scraper_utils = __importStar(require("./utils"));

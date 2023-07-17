@@ -1,14 +1,14 @@
 import Player from '../dist/models/player';
 
 describe('Player', () => {
-    const player = new Player();
+    const player = new Player(3455);
 
     it('should create a player', () => {
         expect(player).toBeDefined();
     });
 
     it('should initialize a player', async () => {
-        await player.init('https://www.transfermarkt.com/zlatan-ibrahimovi%C4%87/profil/spieler/3455');
+        await player.init();
         expect(player.getNationality()).toBe('Sweden');
     });
 

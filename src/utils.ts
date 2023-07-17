@@ -1,6 +1,6 @@
-import { TRANSFERMARKT_URL } from './constants';
+import fetch, { RequestInit, Response } from 'node-fetch';
 
-import fetch, { Response, RequestInit } from 'node-fetch';
+import { TRANSFERMARKT_URL } from './constants';
 
 const requestInit: RequestInit = {
     headers: {
@@ -10,12 +10,14 @@ const requestInit: RequestInit = {
     agent: null,
 };
 
+const ensureSlash = (url: string) => url.endsWith('/') ? url : `${url}/`;
+
 export const leagueURLWithSeason = (url: string, season: number) => {
-    return `${url}${url.endsWith('/') ? '' : '/'}plus/?saison_id=${season}`;
+    return `${ensureSlash(url)}plus/?saison_id=${season}`;
 };
 
 export const teamURLWithSeason = (url: string, season: number) => {
-    return `${url}${url.endsWith('/') ? '' : '/'}/saison_id/${season}`;
+    return `${ensureSlash(url)}saison_id/${season}`;
 };
 
 export const appendURLToRoot = (url: string) => {
@@ -38,7 +40,27 @@ export const pluralSuffix = (count: number) => {
 
 export const teamLinkIsNotValid = (teamLink: string) => teamLink === '' || teamLink.includes('relegation');
 
-export const removeInvalidTeamLinks = (teamLinks: string[]) => teamLinks.filter((val) => !teamLinkIsNotValid(val));
+export const removeInvalidTeamLinks = (teamLinks: string[]) => teamLinks.filter(val => !teamLinkIsNotValid(val));
+
+export const getTeamURLfromID = (teamID: number, season?: number) => {
+    const dryLink = `${TRANSFERMARKT_URL}/team/startseite/verein/${teamID}`;
+
+    return season === undefined
+        ? dryLink
+        : teamURLWithSeason(dryLink, season);
+};
+
+export const getPlayerURLfromID = (playerID: number) => {
+    return `${TRANSFERMARKT_URL}/player/profil/spieler/${playerID}`;
+};
+
+export const getLeagueSeasonURLfromID = (leagueID: string, season?: number) => {
+    const dryLink = `${TRANSFERMARKT_URL}/league/startseite/wettbewerb/${leagueID}`;
+
+    return season === undefined
+        ? dryLink
+        : leagueURLWithSeason(dryLink, season);
+};
 
 export const responseIsOK = (response: Response) => response.status === 200;
 
@@ -48,6 +70,36 @@ export const fetcher = async (url: string) => fetch(url, requestInit).then((res)
     }
     throw new Error(`Response status ${res.status} for ${url}`);
 });
+
+export const fetchTeam = async (teamId: number, season?: number) => {
+    const teamURL = getTeamURLfromID(teamId, season);
+    const data = await fetcher(teamURL);
+
+    return data;
+};
+
+export const fetchPlayer = async (playerId: number) => {
+    const playerURL = `${TRANSFERMARKT_URL}/player/profil/spieler/${playerId}`;
+    const data = await fetcher(playerURL);
+
+    return data;
+};
+
+export const fetchLeagueSeason = async (leagueId: string, season: number) => {
+    const leagueSeasonURL = getLeagueSeasonURLfromID(leagueId, season);
+    const data = await fetcher(leagueSeasonURL);
+
+    console.log(leagueSeasonURL);
+
+    return data;
+};
+
+export const getIDfromURL = (url: string) => {
+    const splitted = removeSeasonInfoFromTeamURL(url).split('/');
+    return splitted.pop() || splitted.pop();
+};
+
+export const getIDsFromURLs = (urls: string[]) => urls.map(getIDfromURL);
 
 export const removeWhitespaceAtEnds = (str: string) => str.replace(/^\s+|\s+$/g, '');
 
@@ -66,11 +118,11 @@ export const removeSeasonInfoFromTeamURL = (str: string) => str.indexOf('saison_
 
 export const seasonInRange = (season: number) => season >= 1980 && season <= new Date().getFullYear() + 1;
 
-type ArrayFilter = (arr: string[]) => string[];
+type ArrayFilter = (arr: any[]) => any[];
 
-type StringFilter = (str: string) => string;
+type ElementFilter = (elem: any) => any;
 
-export const applyFiltersToArray = (arr: string[], ...filters: ArrayFilter[]) => {
+export function applyFiltersToArray<ElementT>(arr: ElementT[], ...filters: ArrayFilter[]) {
     let result = arr;
 
     for (const arrFilter of filters) {
@@ -78,14 +130,14 @@ export const applyFiltersToArray = (arr: string[], ...filters: ArrayFilter[]) =>
     }
 
     return result;
-};
+}
 
-export const applyFiltersToString = (str: string, ...filters: StringFilter[]) => {
-    let result = str;
+export function applyFiltersToElement<ElementT>(elem: ElementT, ...filters: ElementFilter[]) {
+    let result = elem;
 
-    for (const strFilter of filters) {
-        result = strFilter(result);
+    for (const elemFilter of filters) {
+        result = elemFilter(result);
     }
 
     return result;
-};
+}

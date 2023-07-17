@@ -1,4 +1,4 @@
-import { LEAGUE_URLS, LeagueName, Team, fetchLeagueSeason, getTeamURLsForLastNSeasons } from '../dist';
+import { TEAM_IDS, Team, fetchLeagueSeason } from '../dist';
 
 describe('main', () => {
     it('should fetch a league season', async () => {
@@ -24,6 +24,8 @@ describe('main', () => {
         ];
         let equal = true;
         const leagueSeason = await fetchLeagueSeason('BUNDESLIGA', 2020);
+
+        expect(leagueSeason.getYear()).toBe(2020);
         
         for (let i = 0; i < expected.length; i++) {
             if (leagueSeason.getTeamURLs()[i] !== expected[i]) {
@@ -33,28 +35,36 @@ describe('main', () => {
         }
 
         expect(equal).toBe(true);
-    });
+    }, 10_000);
 
-    it('should print the team URLs for last n seasons for all leagues available', async () => {
-        const leagueNames: string[] = Object.keys(LEAGUE_URLS);
-        const teamURLs: { [key: string]: { [key: string]: string } } = {};
+    it('should fetch a team based on id', async () => {
+        const team = new Team(TEAM_IDS.SUPER_LIG['MKE Ankaragücü'], 2004);
+        await team.init();
+        expect(team.getName()).toBe('MKE Ankaragücü');
+        expect(team.getSeason()).toBe(2004);
+    }, 9_000);
 
-        for (const leagueName of leagueNames) {
-            const lastNSeasonTeams = await getTeamURLsForLastNSeasons(leagueName as LeagueName, 1, true);
-            if (!teamURLs[leagueName]) {
-                teamURLs[leagueName] = {};
+    it('should find all players who played for Real Madrid and Chelsea since 2007', async () => {
+        const players: string[] = [];
+
+        for (let season = 2007; season <= new Date().getFullYear(); season++) {
+            const realMadridTeam = new Team(TEAM_IDS.LA_LIGA['Real Madrid'], season);
+            await realMadridTeam.init();
+
+            expect(realMadridTeam.getSeason()).toBe(season);
+            
+            const rmPlayers = await realMadridTeam.fetchPlayers();
+
+            console.log(rmPlayers.map(player => player.getName()));
+
+            for (const player of rmPlayers) {
+                if (player.getTeamIDs()
+                    .includes(TEAM_IDS.PREMIER_LEAGUE['Chelsea FC']) && players.indexOf(player.getName()) === -1) {
+                    players.push(player.getName());
+                }
             }
-            console.log(leagueName);
-            for (const teamURL of lastNSeasonTeams) {
-                const team = new Team();
-                await team.init(teamURL);
-                
-                teamURLs[leagueName][team.getName()] = (teamURL);
-            }
-
-            console.log(teamURLs[leagueName]);
         }
 
-        expect(true).toBe(true);
+        console.log(players);
     }, 8_000_000);
 });

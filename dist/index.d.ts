@@ -11,14 +11,12 @@ import Team from './models/team';
  */
 export declare const fetchLeagueSeason: (league: LeagueName, season: number) => Promise<Season>;
 /**
- * fetches all the teams' urls who played in the given league for the last n seasons.
+ * fetches all the teams' ids who played in the given league for the last n seasons.
  * returns an array of urls corresponding to each team's page for the given season.
- * for removing the season info and duplicate urls, set removeSeasonInfo to true.
  * @param league
  * @param n
- * @param removeSeasonInfo removes the season info from the url and removes duplicates if set to true
  */
-export declare const getTeamURLsForLastNSeasons: (league: LeagueName, n: number, removeSeasonInfo?: boolean) => Promise<string[]>;
+export declare const getTeamIDsForLastNSeasons: (league: LeagueName, n: number) => Promise<number[]>;
 export { League, Player, Season, Team, };
 export * from './constants';
 export * as transfermarkt_scraper_utils from './utils';
