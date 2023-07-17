@@ -1,6 +1,6 @@
 declare class League {
-    private url;
-    constructor(url: string);
-    getURL(): string;
+    private id;
+    constructor(id: string);
+    getID(): string;
 }
 export default League;

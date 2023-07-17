@@ -1,4 +1,4 @@
-import { LEAGUE_URLS, LeagueName, Team, fetchLeagueSeason, getTeamURLsForLastNSeasons } from '../dist';
+import { Player, TEAM_IDS, Team, fetchLeagueSeason } from '../dist';
 
 describe('main', () => {
     it('should fetch a league season', async () => {
@@ -35,26 +35,31 @@ describe('main', () => {
         expect(equal).toBe(true);
     });
 
-    it('should print the team URLs for last n seasons for all leagues available', async () => {
-        const leagueNames: string[] = Object.keys(LEAGUE_URLS);
-        const teamURLs: { [key: string]: { [key: string]: string } } = {};
+    it('should fetch a team based on url', async () => {
+        const team = new Team(TEAM_IDS.SUPER_LIG['MKE Ankaragücü']);
+        await team.init();
+        expect(team.getName()).toBe('MKE Ankaragücü');
+        expect(team.getSeason()).toBe(2023);
+    }, 9_000);
 
-        for (const leagueName of leagueNames) {
-            const lastNSeasonTeams = await getTeamURLsForLastNSeasons(leagueName as LeagueName, 1, true);
-            if (!teamURLs[leagueName]) {
-                teamURLs[leagueName] = {};
-            }
-            console.log(leagueName);
-            for (const teamURL of lastNSeasonTeams) {
-                const team = new Team();
-                await team.init(teamURL);
-                
-                teamURLs[leagueName][team.getName()] = (teamURL);
-            }
+    it('should find all players who played for Real Madrid and Chelsea since 2000', async () => {
+        const players: Player[] = [];
 
-            console.log(teamURLs[leagueName]);
+        for (let season = 2007; season <= new Date().getFullYear(); season++) {
+            const realMadridTeam = new Team(TEAM_IDS.LA_LIGA['Real Madrid'], season);
+            await realMadridTeam.init();
+            
+            const rmPlayers = await realMadridTeam.fetchPlayers();
+
+            for (const player of rmPlayers) {
+                if (player.getTeamIDs()
+                    .includes(TEAM_IDS.PREMIER_LEAGUE['Chelsea FC']) && players.indexOf(player) === -1) {
+                    players.push(player);
+                    console.log('YIPPIEE\n\n\n\n\n\n\n\n\n\n\n\n\n');
+                }
+            }
         }
 
-        expect(true).toBe(true);
+        console.log(players);
     }, 8_000_000);
 });

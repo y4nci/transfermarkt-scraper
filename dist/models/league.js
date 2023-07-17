@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class League {
-    url;
-    constructor(url) {
-        this.url = url;
+    id;
+    constructor(id) {
+        this.id = id;
     }
-    getURL() {
-        return this.url;
+    getID() {
+        return this.id;
     }
 }
 exports.default = League;

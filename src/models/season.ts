@@ -1,19 +1,23 @@
-import { appendURLToRoot, applyFiltersToArray, applyFiltersToString, fetcher, leagueURLWithSeason, removeDuplicates, removeHashLinks, removeInvalidTeamLinks } from '../utils';
+import { JSDOM } from 'jsdom';
+
+import {
+    appendURLToRoot, applyFiltersToArray, applyFiltersToElement, fetcher, getIDsFromURLs, getLeagueSeasonURLfromID, getTeamURLfromID,
+    removeDuplicates,
+    removeHashLinks, removeInvalidTeamLinks,
+} from '../utils';
 import League from './league';
 import Team from './team';
-
-import { JSDOM } from 'jsdom';
 
 class Season extends League {
     // year is the year the season started, also it is the seasonID
     private year: number;
 
-    private teamURLs: string[];
+    private teamIDs: number[];
 
     private teams: Team[];
 
-    constructor(url: string, year: number) {
-        super(leagueURLWithSeason(url, year));
+    constructor(leagueId: string, year: number) {
+        super(leagueId);
 
         this.year = year;
     }
@@ -22,14 +26,17 @@ class Season extends League {
         let parser: JSDOM;
         let seasonDocument: Document;
 
-        const data = await fetcher(this.getURL());
-        
+        const data = await fetcher(this.getID());
+
         parser = new JSDOM(data);
         seasonDocument = parser.window.document;
 
-        this.teamURLs = applyFiltersToArray(Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))
-            .map(a => applyFiltersToString(a.getAttribute('href'), appendURLToRoot) ?? ''),
-            removeDuplicates, removeHashLinks, removeInvalidTeamLinks);
+        this.teamIDs = applyFiltersToArray(
+            Array.from(seasonDocument.querySelectorAll('td.no-border-links > a'))
+                .map(a => applyFiltersToElement(a.getAttribute('href'), appendURLToRoot) ?? ''),
+            removeDuplicates, removeHashLinks, removeInvalidTeamLinks, getIDsFromURLs,
+        )
+            .map(id => Number(id));
 
         this.teams = [];
 
@@ -38,18 +45,22 @@ class Season extends League {
 
     public getYear = () => this.year;
 
-    public getTeamURLs = () => this.teamURLs;
+    public getTeamIDs = () => this.teamIDs;
 
     public getTeams = () => this.teams;
+
+    public getURL = () => getLeagueSeasonURLfromID(this.getID(), this.year);
+
+    public getTeamURLs = () => this.teamIDs.map(id => getTeamURLfromID(id, this.year));
 
     /**
      * fetches teams, stores them in the teams prop of the Season instance and returns it.
      * @returns fetched teams
      */
     public fetchTeams = async () => {
-        for (const teamURL of this.teamURLs) {
-            const team = new Team();
-            await team.init(teamURL);
+        for (const teamID of this.teamIDs) {
+            const team = new Team(teamID, this.year);
+            await team.init();
             this.teams.push(team);
         }
 

@@ -1,8 +1,8 @@
 class League {
-    constructor(private url: string) {}
+    constructor(private id: string) {}
 
-    getURL(): string {
-        return this.url;
+    getID(): string {
+        return this.id;
     }
 }
 

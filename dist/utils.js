@@ -3,9 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.applyFiltersToString = exports.applyFiltersToArray = exports.seasonInRange = exports.removeSeasonInfoFromTeamURL = exports.removeParantheticals = exports.removeNumbers = exports.removeHashLinks = exports.removeDuplicates = exports.removeEmptyStrings = exports.removeWhitespaceAtEnds = exports.fetcher = exports.responseIsOK = exports.removeInvalidTeamLinks = exports.teamLinkIsNotValid = exports.pluralSuffix = exports.convertToTeamURL = exports.appendURLToRoot = exports.teamURLWithSeason = exports.leagueURLWithSeason = void 0;
-const constants_1 = require("./constants");
+exports.applyFiltersToElement = exports.applyFiltersToArray = exports.seasonInRange = exports.removeSeasonInfoFromTeamURL = exports.removeParantheticals = exports.removeNumbers = exports.removeHashLinks = exports.removeDuplicates = exports.removeEmptyStrings = exports.removeWhitespaceAtEnds = exports.getIDsFromURLs = exports.getIDfromURL = exports.fetchPlayer = exports.fetchTeam = exports.fetcher = exports.responseIsOK = exports.getLeagueSeasonURLfromID = exports.getPlayerURLfromID = exports.getTeamURLfromID = exports.removeInvalidTeamLinks = exports.teamLinkIsNotValid = exports.pluralSuffix = exports.convertToTeamURL = exports.appendURLToRoot = exports.teamURLWithSeason = exports.leagueURLWithSeason = void 0;
 const node_fetch_1 = __importDefault(require("node-fetch"));
+const constants_1 = require("./constants");
 const requestInit = {
     headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
@@ -13,12 +13,13 @@ const requestInit = {
     method: 'GET',
     agent: null,
 };
+const ensureSlash = (url) => url.endsWith('/') ? url : `${url}/`;
 const leagueURLWithSeason = (url, season) => {
-    return `${url}${url.endsWith('/') ? '' : '/'}plus/?saison_id=${season}`;
+    return `${ensureSlash(url)}plus/?saison_id=${season}`;
 };
 exports.leagueURLWithSeason = leagueURLWithSeason;
 const teamURLWithSeason = (url, season) => {
-    return `${url}${url.endsWith('/') ? '' : '/'}/saison_id/${season}`;
+    return `${ensureSlash(url)}saison_id/${season}`;
 };
 exports.teamURLWithSeason = teamURLWithSeason;
 const appendURLToRoot = (url) => {
@@ -41,8 +42,26 @@ const pluralSuffix = (count) => {
 exports.pluralSuffix = pluralSuffix;
 const teamLinkIsNotValid = (teamLink) => teamLink === '' || teamLink.includes('relegation');
 exports.teamLinkIsNotValid = teamLinkIsNotValid;
-const removeInvalidTeamLinks = (teamLinks) => teamLinks.filter((val) => !(0, exports.teamLinkIsNotValid)(val));
+const removeInvalidTeamLinks = (teamLinks) => teamLinks.filter(val => !(0, exports.teamLinkIsNotValid)(val));
 exports.removeInvalidTeamLinks = removeInvalidTeamLinks;
+const getTeamURLfromID = (teamID, season) => {
+    const dryLink = `${constants_1.TRANSFERMARKT_URL}/team/startseite/verein/${teamID}`;
+    return season === undefined
+        ? dryLink
+        : (0, exports.teamURLWithSeason)(dryLink, season);
+};
+exports.getTeamURLfromID = getTeamURLfromID;
+const getPlayerURLfromID = (playerID) => {
+    return `${constants_1.TRANSFERMARKT_URL}/player/profil/spieler/${playerID}`;
+};
+exports.getPlayerURLfromID = getPlayerURLfromID;
+const getLeagueSeasonURLfromID = (leagueID, season) => {
+    const dryLink = `${constants_1.TRANSFERMARKT_URL}/league/startseite/wettbewerb/${leagueID}`;
+    return season === undefined
+        ? dryLink
+        : (0, exports.leagueURLWithSeason)(dryLink, season);
+};
+exports.getLeagueSeasonURLfromID = getLeagueSeasonURLfromID;
 const responseIsOK = (response) => response.status === 200;
 exports.responseIsOK = responseIsOK;
 const fetcher = async (url) => (0, node_fetch_1.default)(url, requestInit).then((res) => {
@@ -52,6 +71,25 @@ const fetcher = async (url) => (0, node_fetch_1.default)(url, requestInit).then(
     throw new Error(`Response status ${res.status} for ${url}`);
 });
 exports.fetcher = fetcher;
+const fetchTeam = async (teamId) => {
+    const teamURL = `${constants_1.TRANSFERMARKT_URL}/team/startseite/verein/${teamId}`;
+    const data = await (0, exports.fetcher)(teamURL);
+    return data;
+};
+exports.fetchTeam = fetchTeam;
+const fetchPlayer = async (playerId) => {
+    const playerURL = `${constants_1.TRANSFERMARKT_URL}/player/profil/spieler/${playerId}`;
+    const data = await (0, exports.fetcher)(playerURL);
+    return data;
+};
+exports.fetchPlayer = fetchPlayer;
+const getIDfromURL = (url) => {
+    const splitted = (0, exports.removeSeasonInfoFromTeamURL)(url).split('/');
+    return splitted.pop() || splitted.pop();
+};
+exports.getIDfromURL = getIDfromURL;
+const getIDsFromURLs = (urls) => urls.map(exports.getIDfromURL);
+exports.getIDsFromURLs = getIDsFromURLs;
 const removeWhitespaceAtEnds = (str) => str.replace(/^\s+|\s+$/g, '');
 exports.removeWhitespaceAtEnds = removeWhitespaceAtEnds;
 const removeEmptyStrings = (arr) => arr.filter(str => str !== '');
@@ -69,19 +107,19 @@ const removeSeasonInfoFromTeamURL = (str) => str.indexOf('saison_id') !== -1 ? s
 exports.removeSeasonInfoFromTeamURL = removeSeasonInfoFromTeamURL;
 const seasonInRange = (season) => season >= 1980 && season <= new Date().getFullYear() + 1;
 exports.seasonInRange = seasonInRange;
-const applyFiltersToArray = (arr, ...filters) => {
+function applyFiltersToArray(arr, ...filters) {
     let result = arr;
     for (const arrFilter of filters) {
         result = arrFilter(result);
     }
     return result;
-};
+}
 exports.applyFiltersToArray = applyFiltersToArray;
-const applyFiltersToString = (str, ...filters) => {
-    let result = str;
-    for (const strFilter of filters) {
-        result = strFilter(result);
+function applyFiltersToElement(elem, ...filters) {
+    let result = elem;
+    for (const elemFilter of filters) {
+        result = elemFilter(result);
     }
     return result;
-};
-exports.applyFiltersToString = applyFiltersToString;
+}
+exports.applyFiltersToElement = applyFiltersToElement;

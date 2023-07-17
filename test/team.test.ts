@@ -1,14 +1,14 @@
 import Team from '../dist/models/team';
 
 describe('Team', () => {
-    const team = new Team();
+    const team = new Team(131, 2020);
 
     it('should create a team', () => {
         expect(team).toBeDefined();
     });
 
     it('should initialize a team', async () => {
-        await team.init('https://www.transfermarkt.com/fc-barcelona/startseite/verein/131/saison_id/2020');
+        await team.init();
         expect(team.getName()).toBe('FC Barcelona');
     });
 

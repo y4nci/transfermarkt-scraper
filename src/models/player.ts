@@ -1,16 +1,19 @@
-import { appendURLToRoot, applyFiltersToArray, applyFiltersToString, convertToTeamURL, fetcher, removeDuplicates, removeInvalidTeamLinks, removeNumbers, removeParantheticals, removeSeasonInfoFromTeamURL, removeWhitespaceAtEnds } from '../utils';
-import Team from './team';
-
 import { JSDOM } from 'jsdom';
 
+import {
+    applyFiltersToArray, applyFiltersToElement, fetchPlayer, getIDsFromURLs, getPlayerURLfromID, removeDuplicates, removeInvalidTeamLinks,
+    removeNumbers, removeParantheticals, removeSeasonInfoFromTeamURL, removeWhitespaceAtEnds,
+} from '../utils';
+import Team from './team';
+
 class Player {
-    private url: string;
+    private id: number;
 
     private name: string;
 
     private nationality: string;
 
-    private teamURLs: string[];
+    private teamIDs: number[];
 
     private birthDate: Date;
 
@@ -19,62 +22,70 @@ class Player {
      */
     private teams: Team[];
 
-    constructor() {
+    constructor(id: number) {
+        this.id = id;
     }
 
-    public async init(url: string) {
+    public async init() {
         let parser: JSDOM;
         let playerDocument: Document;
 
-        const data = await fetcher(url);
+        const data = await fetchPlayer(this.id);
         parser = new JSDOM(data);
         playerDocument = parser.window.document;
 
-        this.url = url;
-
         Array.from(playerDocument.querySelectorAll('span.data-header__content'))
             .forEach((span) => {
-                const text = applyFiltersToString(span.textContent ?? '', removeWhitespaceAtEnds);
+                const text = applyFiltersToElement(span.textContent ?? '', removeWhitespaceAtEnds);
                 const itemprop = span.getAttribute('itemprop');
 
                 if (itemprop === 'birthDate') {
-                    this.birthDate = new Date(applyFiltersToString(text, removeParantheticals));
+                    this.birthDate = new Date(applyFiltersToElement(text, removeParantheticals));
                 } else if (itemprop === 'nationality') {
                     this.nationality = text;
                 }
             });
 
-        this.name = applyFiltersToString(playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent,
-            removeNumbers, removeWhitespaceAtEnds)
+        this.name = applyFiltersToElement(
+            playerDocument.querySelector('h1.data-header__headline-wrapper')?.textContent,
+            removeNumbers, removeWhitespaceAtEnds,
+        )
             ?? '';
 
-        this.teamURLs = applyFiltersToArray(Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
-            .map(a => applyFiltersToString(a.getAttribute('href'), appendURLToRoot, convertToTeamURL, removeSeasonInfoFromTeamURL) ?? ''),
-            removeDuplicates, removeInvalidTeamLinks);
+        this.teamIDs = applyFiltersToArray(
+            Array.from(playerDocument.querySelectorAll('a.tm-player-transfer-history-grid__club-link'))
+                .map(a => applyFiltersToElement(a.getAttribute('href'), removeSeasonInfoFromTeamURL) ?? ''),
+            removeDuplicates, removeInvalidTeamLinks, getIDsFromURLs,
+        )
+            .map(Id => Number(Id));
 
         this.teams = [];
-    };
+    }
 
-    public getURL = () => this.url;
+    public getID = () => this.id;
 
     public getName = () => this.name;
 
     public getNationality = () => this.nationality;
 
-    public getTeamURLs = () => this.teamURLs;
+    public getTeamIDs = () => this.teamIDs;
 
     public getBirthDate = () => this.birthDate;
 
     public getTeams = () => this.teams;
+
+    public getURL = () => getPlayerURLfromID(this.id);
+
+    public getTeamURLs = () => this.teamIDs.map(id => getPlayerURLfromID(id));
 
     /**
      * fetches teams, stores them in the teams prop of the Player instance and returns it.
      * @returns fetched teams
      */
     public fetchTeams = async () => {
-        for (const teamURL of this.teamURLs) {
-            const team = new Team();
-            await team.init(teamURL);
+        for (const teamID of this.teamIDs) {
+            const team = new Team(teamID);
+            await team.init();
             this.teams.push(team);
         }
 
